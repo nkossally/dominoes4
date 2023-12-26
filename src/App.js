@@ -36,6 +36,8 @@ const DOMINO_KEYS_TO_VALS = {
   28: [6, 6],
 };
 
+const NUM_DOMINOES = 28;
+
 function App() {
   const [computerHand, setComputerHand] = useState([]);
   const [hand, setHand] = useState([]);
@@ -50,17 +52,15 @@ function App() {
   });
   const [computerIsMoving, setComputerIsMoving] = useState(false);
 
-  const numDominoes = 28;
-
   useEffect(() => {}, [highlightedDominoKey]);
   useEffect(() => {}, [keyToClassNames]);
   useEffect(() => {
     if (!gameStarted) {
       const hand1 = [];
       const hand2 = [];
-      while (hand1.length + playedCards.length < numDominoes / 2) {
+      while (hand1.length + playedCards.length < NUM_DOMINOES / 2) {
         const random = Math.random();
-        const num = Math.ceil(random * numDominoes);
+        const num = Math.ceil(random * NUM_DOMINOES);
         if (!hand1.includes(num) && !playedCards.includes(num)) {
           if (num === 1) {
             setPlayedCards([1]);
@@ -70,7 +70,7 @@ function App() {
         }
       }
       if (playedCards.length === 0) setPlayedCards([1]);
-      for (let i = 2; i <= numDominoes; i++) {
+      for (let i = 2; i <= NUM_DOMINOES; i++) {
         if (!hand1.includes(i)) {
           hand2.push(i);
         }
@@ -98,14 +98,13 @@ function App() {
       const computerCardVals = keyToVals[computerHand[i]];
       for (let j = 0; j < playedCards.length; j++) {
         const playedCardNums = keyToVals[playedCards[j]];
-        console.log(computerCardVals, playedCardNums);
         for (let k = 0; k < computerCardVals.length; k++) {
           if (matchDominoKey) break;
           for (let m = 0; m < playedCardNums.length; m++) {
             if (computerCardVals[k] === playedCardNums[m]) {
               matchDominoKey = computerHand[i];
               setHighlightedDominoKey(playedCards[j]);
-              playComputerStep(computerHand[i], playedCards[j]);
+              tryPlayDomino(computerHand[i], playedCards[j], true);
               break;
             }
           }
@@ -114,9 +113,15 @@ function App() {
     }
   };
 
-  const playComputerStep = (computerDominoKey, playedCardKey) => {
-    const dominoVals = keyToVals[computerDominoKey];
+  const handleStop = (num, isComputer) => {
+    const dominoVals = keyToVals[num];
+    tryPlayDomino(num, highlightedDominoKey, false);
+  };
+
+  const tryPlayDomino = (dominoKey, playedCardKey, isComputer) => {
+    const dominoVals = keyToVals[dominoKey];
     const hoveredDominoVals = keyToVals[playedCardKey];
+    if (playedCardKey === null) return;
     let matchVal;
     let hoverValsIdx;
     let dominoValsIdx;
@@ -129,11 +134,16 @@ function App() {
         }
       }
     }
+    if (matchVal === undefined) return;
 
-    const newComputerHand = Array.from(computerHand);
-    const idx = newComputerHand.indexOf(computerDominoKey);
-    newComputerHand.splice(idx, 1);
-    setComputerHand(newComputerHand);
+    const newHand = isComputer ? Array.from(computerHand) : Array.from(hand);
+    const idx = newHand.indexOf(dominoKey);
+    newHand.splice(idx, 1);
+    if (isComputer) {
+      setComputerHand(newHand);
+    } else {
+      setHand(newHand);
+    }
 
     let otherVal;
     if (dominoVals[0] === dominoVals[1]) {
@@ -146,35 +156,35 @@ function App() {
 
     const playedCardsIdx = playedCards.indexOf(playedCardKey);
     if (playedCardsIdx === 0) {
-      setPlayedCards([computerDominoKey, ...playedCards]);
+      setPlayedCards([dominoKey, ...playedCards]);
       if (otherVal < matchVal) {
         setKeyToClassNames({
-          [computerDominoKey]: "domino-left-low",
+          [dominoKey]: "domino-left-low",
           ...keyToClassNames,
         });
       } else {
         setKeyToClassNames({
-          [computerDominoKey]: "domino-left-high",
+          [dominoKey]: "domino-left-high",
           ...keyToClassNames,
         });
       }
     } else {
-      setPlayedCards(playedCards.concat(computerDominoKey));
+      setPlayedCards(playedCards.concat(dominoKey));
       if (otherVal < matchVal) {
         setKeyToClassNames({
-          [computerDominoKey]: "domino-left-high",
+          [dominoKey]: "domino-left-high",
           ...keyToClassNames,
         });
       } else {
         setKeyToClassNames({
-          [computerDominoKey]: "domino-left-low",
+          [dominoKey]: "domino-left-low",
           ...keyToClassNames,
         });
       }
     }
     if (otherVal === matchVal) {
       setKeyToClassNames({
-        [computerDominoKey]: "domino-vertical",
+        [dominoKey]: "domino-vertical",
         ...keyToClassNames,
       });
     }
@@ -182,95 +192,12 @@ function App() {
     dominoVals.splice(dominoValsIdx, 1);
 
     const newKeyToVals = { ...keyToVals };
-    newKeyToVals[computerDominoKey] = dominoVals;
+    newKeyToVals[dominoKey] = dominoVals;
 
     newKeyToVals[playedCardKey] = hoveredDominoVals;
-    console.log("newKeyToVals", newKeyToVals);
     setKeyToVals(newKeyToVals);
   };
 
-  const handleStop = (num, isComputer) => {
-    const dominoVals = keyToVals[num];
-    if (!hoveredDomino) return;
-    const hoveredDominoVals = hoveredDomino
-      .getAttribute("vals")
-      .split(",")
-      .map((numStr) => parseInt(numStr));
-    let matchVal;
-    let hoverValsIdx;
-    let dominoValsIdx;
-    for (let i = 0; i < hoveredDominoVals.length; i++) {
-      for (let j = 0; j < dominoVals.length; j++) {
-        if (hoveredDominoVals[i] === dominoVals[j]) {
-          matchVal = hoveredDominoVals[i];
-          hoverValsIdx = i;
-          dominoValsIdx = j;
-        }
-      }
-    }
-
-    if (matchVal !== undefined) {
-      if (isComputer) {
-        const newComputerHand = Array.from(computerHand);
-        const idx = newComputerHand.indexOf(num);
-        newComputerHand.splice(idx, 1);
-        setComputerHand(newComputerHand);
-      } else {
-        const newHand = Array.from(hand);
-        const idx = newHand.indexOf(num);
-        newHand.splice(idx, 1);
-        setHand(newHand);
-      }
-      let otherVal;
-      if (dominoVals[0] === dominoVals[1]) {
-        otherVal = matchVal;
-      } else if (dominoVals[0] === matchVal) {
-        otherVal = dominoVals[1];
-      } else {
-        otherVal = dominoVals[0];
-      }
-
-      const playedCardsIdx = parseInt(hoveredDomino.getAttribute("idx"));
-      if (playedCardsIdx === 0) {
-        setPlayedCards([num, ...playedCards]);
-        if (otherVal < matchVal) {
-          setKeyToClassNames({ [num]: "domino-left-low", ...keyToClassNames });
-        } else {
-          setKeyToClassNames({ [num]: "domino-left-high", ...keyToClassNames });
-        }
-      } else {
-        setPlayedCards(playedCards.concat(num));
-        if (otherVal < matchVal) {
-          setKeyToClassNames({ [num]: "domino-left-high", ...keyToClassNames });
-        } else {
-          setKeyToClassNames({ [num]: "domino-left-low", ...keyToClassNames });
-        }
-      }
-      if (otherVal === matchVal) {
-        setKeyToClassNames({ [num]: "domino-vertical", ...keyToClassNames });
-      }
-      hoveredDominoVals.splice(hoverValsIdx, 1);
-      dominoVals.splice(dominoValsIdx, 1);
-
-      const newKeyToVals = { ...keyToVals };
-      newKeyToVals[num] = dominoVals;
-      const hoveredDominoKey = parseInt(
-        hoveredDomino.getAttribute("dominoKey")
-      );
-
-      newKeyToVals[hoveredDominoKey] = hoveredDominoVals;
-      console.log("newKeyToVals", newKeyToVals);
-      setKeyToVals(newKeyToVals);
-    }
-    // setPlayAttempts(playAttempts + 1);
-  };
-  console.log("hoveredDomino", hoveredDomino);
-  console.log("playedCards", playedCards);
-  console.log(
-    "highlightedDominoKey",
-    highlightedDominoKey,
-    typeof highlightedDominoKey
-  );
   return (
     <div className="App">
       <header className="App-header">
@@ -284,7 +211,6 @@ function App() {
                 className="domino-vertical"
                 onStop={(e) => handleStop(num, true)}
                 isOnBoard={false}
-                // onMouseDown={handleOnMouseDown}
               />
             );
           })}
@@ -293,7 +219,6 @@ function App() {
           {playedCards.map((num, idx) => {
             const hoverClass =
               highlightedDominoKey === num ? "domino-hover" : "";
-            console.log("what, what, what", keyToClassNames);
             return (
               <Domino
                 dominoKey={num}
@@ -316,7 +241,6 @@ function App() {
                 className="domino-vertical"
                 onStop={(e) => handleStop(num, false)}
                 isOnBoard={false}
-                // onMouseDown={handleOnMouseDown}
               />
             );
           })}
