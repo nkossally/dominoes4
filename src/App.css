@@ -37,8 +37,26 @@
   }
 }
 
-.domino {
+/* .domino {
   width: 30px;
+} */
+
+.domino-button {
+  display: inline-block;
+  border: none;
+  padding: 0;
+  margin: 0;
+  text-decoration: none;
+  background: none;
+  color: #ffffff;
+  /* font-family: sans-serif;
+  font-size: 1rem; */
+  cursor: pointer;
+  text-align: center;
+  /* transition: background 250ms ease-in-out, 
+              transform 150ms ease; */
+  -webkit-appearance: none;
+  -moz-appearance: none;
 }
 
 .hand {
@@ -46,11 +64,38 @@
   flex-direction: row;
 }
 
-.horizontal {
+.domino-left-low {
+  height: 30px;
+
+  rotate: -90deg;
+  margin: 0 7px;
+}
+
+.domino-left-high {
+  height: 30px;
   rotate: 90deg;
+  margin: 0 7px;
+}
+
+.domino-vertical {
+  height: 30px;
+}
+
+.domino-hover{
+  border: 1px solid yellow;
+}
+
+.domino-match{
+  border: 1px solid green;
 }
 
 .board {
-  height: 200px;
+  display: flex;
+  flex-direction: row;
+  min-height: 600px;
   width: 100vw;
+}
+
+.draggable {
+  border: 3px dotted green;
 }

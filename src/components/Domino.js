@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import Draggable from "react-draggable";
 
 // import { useLocation, Link, Navigate, useNavigate } from "react-router-dom";
@@ -32,7 +32,7 @@ import _5_5 from "../images/5 5.png";
 import _5_6 from "../images/5 6.png";
 import _6_6 from "../images/6 6.png";
 
-const map = {
+const mapToPic = {
   1: _0_0,
   2: _0_1,
   3: _0_2,
@@ -63,10 +63,39 @@ const map = {
   28: _6_6,
 };
 
-const Domino = ({ dominoKey }) => {
+const Domino = ({ dominoKey, className, onStop, isOnBoard, onMouseDown, onMouseOver, idx, vals }) => {
+  const ref = useRef(null)
+  if (isOnBoard) {
+    return (
+      <img
+        draggable="false"
+        className={className}
+        src={mapToPic[dominoKey]}
+        alt="domino"
+        vals={vals}
+        ref={ref}
+        onMouseOver={onMouseOver}
+        onMouseDown={onMouseDown}
+        dominoKey={dominoKey}
+        idx={idx}
+      />
+    );
+  }
   return (
-    <Draggable>
-      <img draggable="false"  src={map[dominoKey]} className="domino" alt="domino" />
+    <Draggable
+      onStop={onStop}
+      defaultPosition={{ x: 0, y: 0 }}
+      position={{ x: 0, y: 0 }}
+    >
+      <img
+        draggable="false"
+        src={mapToPic[dominoKey]}
+        alt="domino"
+        className={className}
+        vals={vals}
+        onMouseOver={onMouseOver}
+        onMouseDown={onMouseDown}
+              />
     </Draggable>
   );
 };
