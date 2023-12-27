@@ -338,11 +338,14 @@ function App() {
           <div className="top-domino-row">
             {row1.map((num, idx) => {
               const hoverClass = hoveredDomino === num ? "domino-hover" : "";
-              const verticalClass = idx === row1.length - 1 ? "domino-vertical" : "";
+              const horizontalClasses = new Set (["domino-left-high", "domino-left-low"])
+              if(idx === row1.length - 1 &&  horizontalClasses.has(keyToClassNames[num])){
+                keyToClassNames[num] = "domino-vertical"
+              }
               return (
                 <Domino
                   dominoKey={num}
-                  className={classNames(keyToClassNames[num],verticalClass, hoverClass)}
+                  className={classNames(keyToClassNames[num], hoverClass)}
                   // className={classNames(keyToClassNames[num], hoverClass)}
                   vals={keyToVals[num]}
                   isOnBoard={true}
@@ -380,7 +383,10 @@ function App() {
           <div className="bottom-domino-row">
             {row3.map((num, idx) => {
               const hoverClass = hoveredDomino === num ? "domino-hover" : "";
-              const verticalClass = idx === row1.length - 1 ? "domino-vertical" : "";
+              const horizontalClasses = new Set (["domino-left-high", "domino-left-low"])
+              if(idx === 0 &&  horizontalClasses.has(keyToClassNames[num])){
+                keyToClassNames[num] = "domino-vertical"
+              }
               return (
                 <Domino
                   dominoKey={num}
