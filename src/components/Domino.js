@@ -80,7 +80,6 @@ const Domino = ({ dominoKey, className, onStop, isOnBoard, onMouseDown, onMouseO
   }
   if (isOnBoard) {
     return (
-      // <div className="img-container">
       <img
         draggable="false"
         className={className}
@@ -90,7 +89,6 @@ const Domino = ({ dominoKey, className, onStop, isOnBoard, onMouseDown, onMouseO
         dominoKey={dominoKey}
         idx={idx}
       />
-      // </div>
     );
   }
   return (

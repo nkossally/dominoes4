@@ -57,8 +57,8 @@ function App() {
     let additionalCount = 0;
     setKeyToVals(DOMINO_KEYS_TO_VALS);
     setIsComputersTurn(false);
-    setIsGameOver(false);
     setMiddleBounds(null);
+    setKeyToClassNames({ 1: "domino-vertical" });
 
     while (hand1.length + additionalCount < NUM_DOMINOES / 2) {
       const random = Math.random();
@@ -88,20 +88,13 @@ function App() {
     setUpGame();
   }, []);
 
-  useEffect(() => {
-  }, [playedCards]);
+  useEffect(() => {}, [playedCards]);
 
   useEffect(() => {
     if (isComputersTurn) {
       handleComputerStep();
     }
   }, [isComputersTurn]);
-
-  // useEffect(() => {
-  //   let move1 = getMoveFromHand(computerHand);
-  //   let move2 = getMoveFromHand(hand)
-  //   // if(!move1 || !move2) setIsGameOver(true)
-  // }, [computerHand, hand]);
 
   const handleOnMouseOver = (e) => {
     if (!e.target) return;
@@ -316,10 +309,12 @@ function App() {
     }
   }
 
+  const horizontalClasses = new Set(["domino-left-high", "domino-left-low"]);
+
   return (
     <div className="App">
       <div className="App-header">
-        <button onClick={setUpGame}>Reset Game</button>
+        {/* <button onClick={setUpGame}>Reset Game</button> */}
         <button onClick={handleComputerStep}>Pass</button>
         <div className="board">
           <div className="hand">
@@ -338,14 +333,32 @@ function App() {
           <div className="top-domino-row">
             {row1.map((num, idx) => {
               const hoverClass = hoveredDomino === num ? "domino-hover" : "";
-              const horizontalClasses = new Set (["domino-left-high", "domino-left-low"])
-              if(idx === row1.length - 1 &&  horizontalClasses.has(keyToClassNames[num])){
-                keyToClassNames[num] = "domino-vertical"
+              if (
+                idx === row1.length - 1 &&
+                horizontalClasses.has(keyToClassNames[num])
+              ) {
+                keyToClassNames[num] = "domino-vertical";
               }
+              const horizontalOnVerticalBranch = horizontalClasses.has(
+                keyToClassNames[num]
+              )
+                ? "horizontal-on-vertical-branch"
+                : "";
+              const lower =
+                idx === row1.length - 1 &&
+                horizontalClasses.has(keyToClassNames[row2[0]])
+                  ? "lower"
+                  : "";
+              if (idx === row1.length - 1) console.log("lower", lower);
               return (
                 <Domino
                   dominoKey={num}
-                  className={classNames(keyToClassNames[num], hoverClass)}
+                  className={classNames(
+                    keyToClassNames[num],
+                    hoverClass,
+                    horizontalOnVerticalBranch,
+                    lower
+                  )}
                   // className={classNames(keyToClassNames[num], hoverClass)}
                   vals={keyToVals[num]}
                   isOnBoard={true}
@@ -383,14 +396,32 @@ function App() {
           <div className="bottom-domino-row">
             {row3.map((num, idx) => {
               const hoverClass = hoveredDomino === num ? "domino-hover" : "";
-              const horizontalClasses = new Set (["domino-left-high", "domino-left-low"])
-              if(idx === 0 &&  horizontalClasses.has(keyToClassNames[num])){
-                keyToClassNames[num] = "domino-vertical"
+              if (
+                idx === 0 &&
+                horizontalClasses.has(keyToClassNames[row2[row2.length - 1]])
+              ) {
+                keyToClassNames[num] = "domino-vertical";
               }
+              const horizontalOnVerticalBranch = horizontalClasses.has(
+                keyToClassNames[num]
+              )
+                ? "horizontal-on-vertical-branch"
+                : "";
+              const higher =
+                idx === 0 &&
+                horizontalClasses.has(keyToClassNames[row2[row2.length - 1]])
+                  ? "higher"
+                  : "";
+
               return (
                 <Domino
                   dominoKey={num}
-                  className={classNames(keyToClassNames[num], hoverClass)}
+                  className={classNames(
+                    keyToClassNames[num],
+                    horizontalOnVerticalBranch,
+                    higher,
+                    hoverClass
+                  )}
                   vals={keyToVals[num]}
                   isOnBoard={true}
                   onMouseOver={handleOnMouseOver}
