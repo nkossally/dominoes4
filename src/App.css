@@ -32,6 +32,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -66,36 +67,92 @@
 
 .domino-left-low {
   height: 30px;
-
   rotate: -90deg;
-  margin: 0 7px;
+
+  /* margin: 0 7px; */
 }
 
 .domino-left-high {
   height: 30px;
   rotate: 90deg;
-  margin: 0 7px;
+
+
+  /* margin: 0 7px; */
+
 }
 
 .domino-vertical {
   height: 30px;
+
 }
 
-.domino-hover{
+.domino-upsidedown {
+  height: 30px;
+  rotate: 180deg;
+}
+
+.domino-hover {
   border: 1px solid yellow;
 }
 
-.domino-match{
+.domino-match {
   border: 1px solid green;
 }
 
 .board {
   display: flex;
-  flex-direction: row;
-  min-height: 600px;
-  width: 100vw;
+  flex-direction: column;
+  border: 2px dotted white;
+  width: fit-content;
+  align-items: center;
+  /* min-height: 600px;
+  width: 100vw; */
 }
 
 .draggable {
   border: 3px dotted green;
+}
+
+img {
+   display: block;
+
+  border: 1px dotted purple;
+
+  /* width: 50%; */
+}
+
+.top-domino-row {
+  /* rotate: 90deg;
+  border: 2px solid brown; */
+  /* width: 80vw; */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  border: 2px solid brown;
+  align-self: flex-start;
+
+
+}
+
+
+.bottom-domino-row{
+  display: flex;
+  flex-direction: column;
+  /* justify-content: flex-end; */
+  border: 2px solid brown;
+  align-self: flex-end;
+
+}
+
+.middle-row-horizontal-margin {
+  /* margin: 0 7px; */
+
+}
+
+.img-container{
+  /* border: 2px solid black;
+  width: fit-content;
+  height: fit-content;
+  margin: 0;
+  padding: 2px; */
 }

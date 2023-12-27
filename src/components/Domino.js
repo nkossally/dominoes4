@@ -31,6 +31,7 @@ import _4_6 from "../images/4 6.png";
 import _5_5 from "../images/5 5.png";
 import _5_6 from "../images/5 6.png";
 import _6_6 from "../images/6 6.png";
+import blank from "../images/blank domino.png"
 
 const mapToPic = {
   1: _0_0,
@@ -63,22 +64,33 @@ const mapToPic = {
   28: _6_6,
 };
 
-const Domino = ({ dominoKey, className, onStop, isOnBoard, onMouseDown, onMouseOver, idx, vals }) => {
-  const ref = useRef(null)
+const Domino = ({ dominoKey, className, onStop, isOnBoard, onMouseDown, onMouseOver, idx, isComputer}) => {
+  if ( isComputer) {
+    return (
+      <img
+        draggable="false"
+        className={className}
+        src={blank}
+        alt="domino"
+        onMouseOver={onMouseOver}
+        dominoKey={dominoKey}
+        idx={idx}
+      />
+    );
+  }
   if (isOnBoard) {
     return (
+      // <div className="img-container">
       <img
         draggable="false"
         className={className}
         src={mapToPic[dominoKey]}
         alt="domino"
-        vals={vals}
-        ref={ref}
         onMouseOver={onMouseOver}
-        onMouseDown={onMouseDown}
         dominoKey={dominoKey}
         idx={idx}
       />
+      // </div>
     );
   }
   return (
@@ -86,13 +98,13 @@ const Domino = ({ dominoKey, className, onStop, isOnBoard, onMouseDown, onMouseO
       onStop={onStop}
       defaultPosition={{ x: 0, y: 0 }}
       position={{ x: 0, y: 0 }}
+
     >
       <img
         draggable="false"
         src={mapToPic[dominoKey]}
         alt="domino"
         className={className}
-        vals={vals}
         onMouseOver={onMouseOver}
         onMouseDown={onMouseDown}
               />
