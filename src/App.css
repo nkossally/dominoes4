@@ -1,19 +1,5 @@
 .App {
   text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
   background-color: #282c34;
   min-height: 100vh;
   display: flex;
@@ -23,6 +9,12 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
 
 .App-link {
   color: #61dafb;
@@ -68,22 +60,15 @@
 .domino-left-low {
   height: 30px;
   rotate: -90deg;
-
-  /* margin: 0 7px; */
 }
 
 .domino-left-high {
   height: 30px;
   rotate: 90deg;
-
-
-  /* margin: 0 7px; */
-
 }
 
 .domino-vertical {
   height: 30px;
-
 }
 
 .domino-upsidedown {
@@ -101,13 +86,20 @@
   width: fit-content;
   align-items: center;
 }
+.played-cards{
+  min-height: 100px;
+  display: flex;
+  /* align-items: center; */
+  flex-direction: column;
+  justify-content: center;
+
+}
 
 .top-domino-row {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-self: flex-start;
-
 }
 
 
@@ -115,7 +107,6 @@
   display: flex;
   flex-direction: column;
   align-self: flex-end;
-
 }
 
 .middle-row-horizontal-margin {
