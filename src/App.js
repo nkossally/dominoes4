@@ -51,7 +51,7 @@ function App() {
   const [isComputersTurn, setIsComputersTurn] = useState(false);
   const [middleBounds, setMiddleBounds] = useState(null);
   const [isGameOver, setIsGameOver] = useState(false);
-  const [count, setCount] = useState(0);
+  const [orderedVals, setOrderedVals] = useState({ 1: [0, 0] });
 
   const setUpGame = () => {
     const hand1 = [];
@@ -191,86 +191,30 @@ function App() {
     } else {
       otherVal = dominoVals[0];
     }
+
     if (playedCards.length === MIDDLE_ROW_MAX) {
       setMiddleBounds([playedCards[0], playedCards[MIDDLE_ROW_MAX - 1]]);
     }
-    let onBranch = playedCards.length >= MIDDLE_ROW_MAX;
 
     const playedCardsIdx = playedCards.indexOf(playedCardKey);
     if (playedCardsIdx === 0) {
+      let className;
+      if (playedCards.length > MIDDLE_ROW_MAX) {
+        className = getClassNameForRow1(matchVal, otherVal);
+      } else {
+        className = getClassNameForRow2(matchVal, otherVal, false);
+      }
+      setKeyToClassNames({ [dominoKey]: className, ...keyToClassNames });
       setPlayedCards([dominoKey, ...playedCards]);
-      if (onBranch) {
-        if (otherVal < matchVal) {
-          setKeyToClassNames({
-            [dominoKey]: "domino-vertical",
-            ...keyToClassNames,
-          });
-        } else if (otherVal > matchVal) {
-          setKeyToClassNames({
-            [dominoKey]: "domino-upsidedown",
-            ...keyToClassNames,
-          });
-        } else {
-          setKeyToClassNames({
-            [dominoKey]: "domino-left-high",
-            ...keyToClassNames,
-          });
-        }
-      } else {
-        if (otherVal < matchVal) {
-          setKeyToClassNames({
-            [dominoKey]: "domino-left-low",
-            ...keyToClassNames,
-          });
-        } else if (otherVal > matchVal) {
-          setKeyToClassNames({
-            [dominoKey]: "domino-left-high",
-            ...keyToClassNames,
-          });
-        } else {
-          setKeyToClassNames({
-            [dominoKey]: "domino-vertical",
-            ...keyToClassNames,
-          });
-        }
-      }
     } else {
-      setPlayedCards(playedCards.concat(dominoKey));
-      if (onBranch) {
-        if (otherVal < matchVal) {
-          setKeyToClassNames({
-            [dominoKey]: "domino-upsidedown",
-            ...keyToClassNames,
-          });
-        } else if (otherVal > matchVal) {
-          setKeyToClassNames({
-            [dominoKey]: "domino-vertical",
-            ...keyToClassNames,
-          });
-        } else {
-          setKeyToClassNames({
-            [dominoKey]: "domino-left-high",
-            ...keyToClassNames,
-          });
-        }
+      let className;
+      if (playedCards.length > MIDDLE_ROW_MAX) {
+        className = getClassNameForRow3(matchVal, otherVal);
       } else {
-        if (otherVal < matchVal) {
-          setKeyToClassNames({
-            [dominoKey]: "domino-left-high",
-            ...keyToClassNames,
-          });
-        } else if (otherVal > matchVal) {
-          setKeyToClassNames({
-            [dominoKey]: "domino-left-low",
-            ...keyToClassNames,
-          });
-        } else {
-          setKeyToClassNames({
-            [dominoKey]: "domino-vertical",
-            ...keyToClassNames,
-          });
-        }
+        className = getClassNameForRow2(matchVal, otherVal, true);
       }
+      setKeyToClassNames({ [dominoKey]: className, ...keyToClassNames });
+      setPlayedCards(playedCards.concat(dominoKey));
     }
 
     hoveredDominoVals.splice(hoverValsIdx, 1);
@@ -308,10 +252,64 @@ function App() {
     }
   }
 
+  const getClassNameForRow2 = (matchVal, otherVal, isRightOfBlank) => {
+    let className;
+    if (isRightOfBlank) {
+      if (matchVal > otherVal) {
+        className = "domino-left-high";
+      } else if (matchVal < otherVal) {
+        className = "domino-left-low";
+      }
+    } else {
+      if (matchVal > otherVal) {
+        className = "domino-left-low";
+      } else if (matchVal < otherVal) {
+        className = "domino-left-high";
+      }
+    }
+    if (matchVal === otherVal) {
+      className = "domino-vertical";
+    }
+    return className;
+  };
+
+  const getClassNameForRow1 = (matchVal, otherVal) => {
+    let className;
+    if (matchVal < otherVal) {
+      className = "domino-upsidedown";
+    } else if (matchVal > otherVal) {
+      className = "domino-vertical";
+    } else {
+      // if (idx !== row1.length - 1) {
+      //   className = "domino-left-high";
+      // } else {
+      className = "domino-vertical";
+      // }
+    }
+    return className;
+  };
+
+  const getClassNameForRow3 = (matchVal, otherVal) => {
+    let className;
+    if (matchVal < otherVal) {
+      className = "domino-vertical";
+    } else if (matchVal > otherVal) {
+      className = "domino-upsidedown";
+    } else {
+      // if (idx !== 0) {
+      className = "domino-left-high";
+      // } else {
+      //   className = "domino-vertical";
+      // }
+    }
+    return className;
+  };
+  console.log(keyToClassNames)
+
   return (
     <div className="App">
       <div className="App-header">
-        <button onClick={setUpGame}>Reset Game</button>
+        {/* <button onClick={setUpGame}>Reset Game</button> */}
         <button onClick={handleComputerStep}>Pass</button>
         <div className="board">
           <div className="hand">
@@ -330,15 +328,17 @@ function App() {
           <div className="played-cards">
             <div className="top-domino-row">
               {row1.map((num, idx) => {
-                const hoverClass = hoveredDomino === num ? "domino-hover" : "";
+                let className = keyToClassNames[num];
                 if (
                   idx === row1.length - 1 &&
-                  HORIZONTAL_CLASSES.has(keyToClassNames[num])
+                  HORIZONTAL_CLASSES.has(className)
                 ) {
-                  keyToClassNames[num] = "domino-vertical";
+                  className = "domino-vertical";
                 }
+                const hoverClass = hoveredDomino === num ? "domino-hover" : "";
+
                 const horizontalOnVerticalBranch = HORIZONTAL_CLASSES.has(
-                  keyToClassNames[num]
+                  className
                 )
                   ? "horizontal-on-vertical-branch"
                   : "";
@@ -351,12 +351,11 @@ function App() {
                   <Domino
                     dominoKey={num}
                     className={classNames(
-                      keyToClassNames[num],
+                      className,
                       hoverClass,
                       horizontalOnVerticalBranch,
                       lower
                     )}
-                    // className={classNames(keyToClassNames[num], hoverClass)}
                     vals={keyToVals[num]}
                     isOnBoard={true}
                     onMouseOver={handleOnMouseOver}
@@ -367,18 +366,16 @@ function App() {
             </div>
             <div className="hand">
               {row2.map((num, idx) => {
+                const className = keyToClassNames[num];
                 const hoverClass = hoveredDomino === num ? "domino-hover" : "";
-                const marginClass = HORIZONTAL_CLASSES.has(keyToClassNames[num])
+
+                const marginClass = HORIZONTAL_CLASSES.has(className)
                   ? "middle-row-horizontal-margin"
                   : "";
                 return (
                   <Domino
                     dominoKey={num}
-                    className={classNames(
-                      keyToClassNames[num],
-                      hoverClass,
-                      marginClass
-                    )}
+                    className={classNames(className, hoverClass, marginClass)}
                     vals={keyToVals[num]}
                     isOnBoard={true}
                     onMouseOver={handleOnMouseOver}
@@ -390,14 +387,12 @@ function App() {
             <div className="bottom-domino-row">
               {row3.map((num, idx) => {
                 const hoverClass = hoveredDomino === num ? "domino-hover" : "";
-                if (
-                  idx === 0 &&
-                  HORIZONTAL_CLASSES.has(keyToClassNames[row2[row2.length - 1]])
-                ) {
-                  keyToClassNames[num] = "domino-upsidedown";
+                let className = keyToClassNames[num];
+                if (idx === 0 && HORIZONTAL_CLASSES.has(className)) {
+                  className = "domino-vertical";
                 }
                 const horizontalOnVerticalBranch = HORIZONTAL_CLASSES.has(
-                  keyToClassNames[num]
+                  className
                 )
                   ? "horizontal-on-vertical-branch"
                   : "";
@@ -411,7 +406,7 @@ function App() {
                   <Domino
                     dominoKey={num}
                     className={classNames(
-                      keyToClassNames[num],
+                      className,
                       horizontalOnVerticalBranch,
                       higher,
                       hoverClass
