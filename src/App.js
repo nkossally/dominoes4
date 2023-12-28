@@ -280,11 +280,7 @@ function App() {
     } else if (matchVal > otherVal) {
       className = "domino-vertical";
     } else {
-      // if (idx !== row1.length - 1) {
-      //   className = "domino-left-high";
-      // } else {
-      className = "domino-vertical";
-      // }
+      className = "domino-left-high";
     }
     return className;
   };
@@ -296,11 +292,7 @@ function App() {
     } else if (matchVal > otherVal) {
       className = "domino-upsidedown";
     } else {
-      // if (idx !== 0) {
       className = "domino-left-high";
-      // } else {
-      //   className = "domino-vertical";
-      // }
     }
     return className;
   };
