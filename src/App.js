@@ -151,14 +151,6 @@ function App() {
   const tryPlayDomino = (dominoKey, playedCardKey, isComputer) => {
     const dominoVals = keyToVals[dominoKey];
     const hoveredDominoVals = keyToVals[playedCardKey];
-    console.log(
-      "tryPlayDomino",
-      dominoKey,
-      playedCardKey,
-      isComputer,
-      dominoVals,
-      hoveredDominoVals
-    );
     if (playedCardKey === null) return;
     let matchVal;
     let hoverValsIdx;
@@ -199,7 +191,7 @@ function App() {
     const playedCardsIdx = playedCards.indexOf(playedCardKey);
     if (playedCardsIdx === 0) {
       let className;
-      if (playedCards.length > MIDDLE_ROW_MAX) {
+      if (playedCards.length >= MIDDLE_ROW_MAX) {
         className = getClassNameForRow1(matchVal, otherVal);
       } else {
         className = getClassNameForRow2(matchVal, otherVal, false);
@@ -208,7 +200,7 @@ function App() {
       setPlayedCards([dominoKey, ...playedCards]);
     } else {
       let className;
-      if (playedCards.length > MIDDLE_ROW_MAX) {
+      if (playedCards.length >= MIDDLE_ROW_MAX) {
         className = getClassNameForRow3(matchVal, otherVal);
       } else {
         className = getClassNameForRow2(matchVal, otherVal, true);
@@ -302,7 +294,6 @@ function App() {
     <div className="App">
       <div className="App-header">
         {/* <button onClick={setUpGame}>Reset Game</button> */}
-        <button onClick={handleComputerStep}>Pass</button>
         <div className="board">
           <div className="hand">
             {computerHand.map((num) => {
@@ -426,6 +417,8 @@ function App() {
               );
             })}
           </div>
+          <button onClick={handleComputerStep}>Pass</button>
+
         </div>
       </div>
     </div>
