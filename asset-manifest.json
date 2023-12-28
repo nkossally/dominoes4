@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/dominoes/static/css/main.d7f67443.css",
-    "main.js": "/dominoes/static/js/main.34492fac.js",
-    "static/js/787.77daf6c4.chunk.js": "/dominoes/static/js/787.77daf6c4.chunk.js",
+    "main.js": "/dominoes/static/js/main.9a8c85df.js",
+    "static/js/787.0b8b2ba5.chunk.js": "/dominoes/static/js/787.0b8b2ba5.chunk.js",
     "static/media/0 0.png": "/dominoes/static/media/0 0.1bbf5a282e237fd9b236.png",
     "static/media/5 6.png": "/dominoes/static/media/5 6.641c860e2c374943d778.png",
     "static/media/6 6.png": "/dominoes/static/media/6 6.bce12161c11e4296178f.png",
@@ -34,11 +34,11 @@
     "static/media/0 1.png": "/dominoes/static/media/0 1.1d88bf2245580f8a12e5.png",
     "index.html": "/dominoes/index.html",
     "main.d7f67443.css.map": "/dominoes/static/css/main.d7f67443.css.map",
-    "main.34492fac.js.map": "/dominoes/static/js/main.34492fac.js.map",
-    "787.77daf6c4.chunk.js.map": "/dominoes/static/js/787.77daf6c4.chunk.js.map"
+    "main.9a8c85df.js.map": "/dominoes/static/js/main.9a8c85df.js.map",
+    "787.0b8b2ba5.chunk.js.map": "/dominoes/static/js/787.0b8b2ba5.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.d7f67443.css",
-    "static/js/main.34492fac.js"
+    "static/js/main.9a8c85df.js"
   ]
 }
