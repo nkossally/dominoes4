@@ -5,7 +5,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  /* justify-content: center; */
   font-size: calc(10px + 2vmin);
   color: white;
 }
@@ -30,10 +30,6 @@
   }
 }
 
-/* .domino {
-  width: 30px;
-} */
-
 .domino-button {
   display: inline-block;
   border: none;
@@ -55,25 +51,32 @@
 .hand {
   display: flex;
   flex-direction: row;
+  justify-content: center;
 }
 
 .domino-left-low {
   height: 30px;
   rotate: -90deg;
+  margin: 1px 1px;
 }
 
 .domino-left-high {
   height: 30px;
   rotate: 90deg;
+  margin: 1px 1px;
+
 }
 
 .domino-vertical {
   height: 30px;
+  margin: 1px 1px;
+
 }
 
 .domino-upsidedown {
   height: 30px;
   rotate: 180deg;
+  margin: 1px 1px;
 }
 
 .domino-hover {
@@ -83,15 +86,17 @@
 .board {
   display: flex;
   flex-direction: column;
-  width: fit-content;
   align-items: center;
+  justify-content: center;
+  height: 210px;
 }
 
 .played-cards {
-  min-height: 100px;
+  /* height: 250px; */
   display: flex;
   flex-direction: column;
   justify-content: center;
+  /* justify-self: center; */
 }
 
 .top-domino-row {
@@ -138,4 +143,12 @@
   display: flex;
   flex-direction: row-reverse;
   margin-top: -7px;
+}
+
+.pass-button {
+  margin-top: 50px;
+}
+
+.bottom-row-of-board {
+  /* justify-self: flex-end; */
 }

@@ -1,8 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import Draggable from "react-draggable";
 
-// import { useLocation, Link, Navigate, useNavigate } from "react-router-dom";
-
 import _0_0 from "../images/0 0.png";
 import _0_1 from "../images/0 1.png";
 import _0_2 from "../images/0 2.png";

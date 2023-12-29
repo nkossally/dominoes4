@@ -1,43 +1,29 @@
 import classNames from "classnames";
 import { useState, useEffect, useCallback, useReducer } from "react";
-
+import { Button } from "@mui/material";
 import "./App.css";
 import Domino from "./components/Domino";
+import InstructionsModal from "./components/Modal";
+import {
+  DOMINO_KEYS_TO_VALS,
+  HORIZONTAL_CLASSES,
+  NUM_DOMINOES,
+  MIDDLE_ROW_MAX,
+} from "./consts";
 
-const DOMINO_KEYS_TO_VALS = {
-  1: [0, 0],
-  2: [0, 1],
-  3: [0, 2],
-  4: [0, 3],
-  5: [0, 4],
-  6: [0, 5],
-  7: [0, 6],
-  8: [1, 1],
-  9: [1, 2],
-  10: [1, 3],
-  11: [1, 4],
-  12: [1, 5],
-  13: [1, 6],
-  14: [2, 2],
-  15: [2, 3],
-  16: [2, 4],
-  17: [2, 5],
-  18: [2, 6],
-  19: [3, 3],
-  20: [3, 4],
-  21: [3, 5],
-  22: [3, 6],
-  23: [4, 4],
-  24: [4, 5],
-  25: [4, 6],
-  26: [5, 5],
-  27: [5, 6],
-  28: [6, 6],
+const passButtonStyle = {
+  // position: "absolute",
+  // top: "50%",
+  // left: "50%",
+  // transform: "translate(-50%, -50%)",
+  // width: 400,
+  // bgcolor: "background.paper",
+  // border: "2px solid #000",
+  // boxShadow: 24,
+  // p: 4,
+  "margin-top": "5px",
+  "font-size": "10px",
 };
-
-const NUM_DOMINOES = 28;
-const MIDDLE_ROW_MAX = 10;
-const HORIZONTAL_CLASSES = new Set(["domino-left-high", "domino-left-low"]);
 
 function App() {
   const [computerHand, setComputerHand] = useState([]);
@@ -347,20 +333,21 @@ function App() {
     <div className="App">
       <div className="App-header">
         {/* <button onClick={handleResetGame}>Reset Game</button> */}
+        <InstructionsModal />
+        <div className="hand">
+          {computerHand.map((num) => {
+            return (
+              <Domino
+                dominoKey={num}
+                vals={keyToVals[num]}
+                className="domino-vertical"
+                isOnBoard={false}
+                isComputer={true}
+              />
+            );
+          })}
+        </div>
         <div className="board">
-          <div className="hand">
-            {computerHand.map((num) => {
-              return (
-                <Domino
-                  dominoKey={num}
-                  vals={keyToVals[num]}
-                  className="domino-vertical"
-                  isOnBoard={false}
-                  isComputer={true}
-                />
-              );
-            })}
-          </div>
           <div className="played-cards">
             <div className="row-1">
               {row1.map((num, idx) => {
@@ -529,22 +516,28 @@ function App() {
               </div>
             </div>
           </div>
-          <div className="hand">
-            {hand.map((num) => {
-              return (
-                <Domino
-                  dominoKey={num}
-                  vals={keyToVals[num]}
-                  className="domino-vertical"
-                  onStop={(e) => handleStop(num)}
-                  isOnBoard={false}
-                  isComputersTurn={isComputersTurn}
-                />
-              );
-            })}
-          </div>
-          <button onClick={handleComputerStep}>Pass</button>
         </div>
+        <div className="hand">
+          {hand.map((num) => {
+            return (
+              <Domino
+                dominoKey={num}
+                vals={keyToVals[num]}
+                className="domino-vertical"
+                onStop={(e) => handleStop(num)}
+                isOnBoard={false}
+                isComputersTurn={isComputersTurn}
+              />
+            );
+          })}
+        </div>
+        <Button
+          variant="contained"
+          sx={passButtonStyle}
+          onClick={handleComputerStep}
+        >
+          Pass
+        </Button>
       </div>
     </div>
   );
