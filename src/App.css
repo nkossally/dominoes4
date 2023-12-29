@@ -86,13 +86,12 @@
   width: fit-content;
   align-items: center;
 }
-.played-cards{
+
+.played-cards {
   min-height: 100px;
   display: flex;
-  /* align-items: center; */
   flex-direction: column;
   justify-content: center;
-
 }
 
 .top-domino-row {
@@ -103,7 +102,7 @@
 }
 
 
-.bottom-domino-row{
+.bottom-domino-row {
   display: flex;
   flex-direction: column;
   align-self: flex-end;
@@ -114,16 +113,29 @@
 
 }
 
-.horizontal-on-vertical-branch{
+.horizontal-on-vertical-branch {
   margin-top: -8px;
   margin-bottom: -8px;
 }
 
 .lower {
- margin-bottom: -7px;
+  margin-bottom: -7px;
 
 }
 
-.higher{
+.higher {
+  margin-top: -7px;
+}
+
+.row-1 {
+  display: flex;
+  flex-direction: row-reverse;
+  align-self: flex-start;
+  margin-bottom: -7px;
+}
+
+.row-5 {
+  display: flex;
+  flex-direction: row-reverse;
   margin-top: -7px;
 }

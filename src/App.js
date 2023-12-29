@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useReducer } from "react";
 
 import "./App.css";
 import Domino from "./components/Domino";
@@ -50,8 +50,15 @@ function App() {
   });
   const [isComputersTurn, setIsComputersTurn] = useState(false);
   const [middleBounds, setMiddleBounds] = useState(null);
-  const [isGameOver, setIsGameOver] = useState(false);
-  const [orderedVals, setOrderedVals] = useState({ 1: [0, 0] });
+  const [startNewGame, setStartNewGame] = useState(true);
+  const [_, forceUpdate] = useReducer((x) => x + 1, 0);
+
+  useEffect(() => {
+    if (startNewGame) {
+      setUpGame();
+    }
+    setStartNewGame(false);
+  }, [startNewGame]);
 
   const setUpGame = () => {
     const hand1 = [];
@@ -61,6 +68,7 @@ function App() {
     setIsComputersTurn(false);
     setMiddleBounds(null);
     setKeyToClassNames({ 1: "domino-vertical" });
+    setStartNewGame(false);
 
     while (hand1.length + additionalCount < NUM_DOMINOES / 2) {
       const random = Math.random();
@@ -87,14 +95,15 @@ function App() {
   };
 
   useEffect(() => {
-    setUpGame();
-  }, []);
-
-  useEffect(() => {
     if (isComputersTurn) {
       handleComputerStep();
     }
   }, [isComputersTurn]);
+
+  const handleResetGame = () => {
+    setUpGame();
+    forceUpdate();
+  };
 
   const handleOnMouseOver = (e) => {
     if (!e.target) return;
@@ -105,8 +114,6 @@ function App() {
     )
       setHoveredDomino(hoveredDominoKey);
   };
-
-  const handleOnMouseDown = () => {};
 
   const getMoveFromHand = (dominoHand) => {
     let result;
@@ -192,18 +199,29 @@ function App() {
     if (playedCardsIdx === 0) {
       let className;
       if (playedCards.length >= MIDDLE_ROW_MAX) {
-        className = getClassNameForRow1(matchVal, otherVal);
+        if (middleBounds && playedCards.indexOf(middleBounds[0]) >= 2) {
+          className = getClassNameForRow1(matchVal, otherVal);
+        } else {
+          className = getClassNameForRow2(matchVal, otherVal);
+        }
       } else {
-        className = getClassNameForRow2(matchVal, otherVal, false);
+        className = getClassNameForRow3(matchVal, otherVal, false);
       }
       setKeyToClassNames({ [dominoKey]: className, ...keyToClassNames });
       setPlayedCards([dominoKey, ...playedCards]);
     } else {
       let className;
       if (playedCards.length >= MIDDLE_ROW_MAX) {
-        className = getClassNameForRow3(matchVal, otherVal);
+        if (
+          middleBounds &&
+          playedCards.indexOf(middleBounds[1]) < playedCards.length - 2
+        ) {
+          className = getClassNameForRow5(matchVal, otherVal);
+        } else {
+          className = getClassNameForRow4(matchVal, otherVal);
+        }
       } else {
-        className = getClassNameForRow2(matchVal, otherVal, true);
+        className = getClassNameForRow3(matchVal, otherVal, true);
       }
       setKeyToClassNames({ [dominoKey]: className, ...keyToClassNames });
       setPlayedCards(playedCards.concat(dominoKey));
@@ -220,11 +238,13 @@ function App() {
     return true;
   };
 
-  const row1 = [];
+  let row1 = [];
   let row2 = [];
-  const row3 = [];
+  let row3 = [];
+  let row4 = [];
+  let row5 = [];
   if (playedCards.length <= MIDDLE_ROW_MAX) {
-    row2 = playedCards;
+    row3 = playedCards;
   } else {
     let sawFirstBound;
     let sawSecondBound;
@@ -233,18 +253,24 @@ function App() {
         sawFirstBound = true;
 
       if (sawSecondBound) {
-        row3.push(playedCards[i]);
+        row4.push(playedCards[i]);
       } else if (sawFirstBound) {
-        row2.push(playedCards[i]);
+        row3.push(playedCards[i]);
       } else {
-        row1.push(playedCards[i]);
+        row2.push(playedCards[i]);
       }
       if (!sawSecondBound && playedCards[i] === middleBounds[1])
         sawSecondBound = true;
     }
   }
+  if (row2.length > 2) {
+    row1 = row2.splice(0, row2.length - 2);
+  }
+  if (row4.length > 2) {
+    row5 = row4.splice(2);
+  }
 
-  const getClassNameForRow2 = (matchVal, otherVal, isRightOfBlank) => {
+  const getClassNameForRow3 = (matchVal, otherVal, isRightOfBlank) => {
     let className;
     if (isRightOfBlank) {
       if (matchVal > otherVal) {
@@ -265,35 +291,62 @@ function App() {
     return className;
   };
 
-  const getClassNameForRow1 = (matchVal, otherVal) => {
+  const getClassNameForRow2 = (matchVal, otherVal) => {
     let className;
     if (matchVal < otherVal) {
       className = "domino-upsidedown";
     } else if (matchVal > otherVal) {
       className = "domino-vertical";
     } else {
-      className = "domino-left-high";
+      className = "domino-vertical";
     }
     return className;
   };
 
-  const getClassNameForRow3 = (matchVal, otherVal) => {
+  const getClassNameForRow4 = (matchVal, otherVal) => {
     let className;
     if (matchVal < otherVal) {
       className = "domino-vertical";
     } else if (matchVal > otherVal) {
       className = "domino-upsidedown";
     } else {
-      className = "domino-left-high";
+      className = "domino-vertical";
     }
     return className;
   };
-  console.log(keyToClassNames)
+  const getClassNameForRow1 = (matchVal, otherVal) => {
+    let className;
+    if (matchVal > otherVal) {
+      className = "domino-left-high";
+    } else if (matchVal < otherVal) {
+      className = "domino-left-low";
+    }
+    if (matchVal === otherVal) {
+      className = "domino-vertical";
+    }
+    return className;
+  };
+
+  const getClassNameForRow5 = (matchVal, otherVal) => {
+    let className;
+
+    if (matchVal > otherVal) {
+      className = "domino-left-low";
+    } else if (matchVal < otherVal) {
+      className = "domino-left-high";
+    }
+
+    if (matchVal === otherVal) {
+      className = "domino-vertical";
+    }
+    return className;
+  };
+  console.log(keyToClassNames);
 
   return (
     <div className="App">
       <div className="App-header">
-        {/* <button onClick={setUpGame}>Reset Game</button> */}
+        {/* <button onClick={handleResetGame}>Reset Game</button> */}
         <div className="board">
           <div className="hand">
             {computerHand.map((num) => {
@@ -309,8 +362,33 @@ function App() {
             })}
           </div>
           <div className="played-cards">
-            <div className="top-domino-row">
+            <div className="row-1">
               {row1.map((num, idx) => {
+                const hoverClass = hoveredDomino === num ? "domino-hover" : "";
+                let className = keyToClassNames[num];
+                if (
+                  idx === row1.length - 1 &&
+                  !HORIZONTAL_CLASSES.has(className)
+                ) {
+                  className = "domino-left-high";
+                }
+                const marginClass = HORIZONTAL_CLASSES.has(className)
+                  ? "middle-row-horizontal-margin"
+                  : "";
+                return (
+                  <Domino
+                    dominoKey={num}
+                    className={classNames(className, hoverClass, marginClass)}
+                    vals={keyToVals[num]}
+                    isOnBoard={true}
+                    onMouseOver={handleOnMouseOver}
+                    idx={idx}
+                  />
+                );
+              })}
+            </div>
+            <div className="top-domino-row">
+              {row2.map((num, idx) => {
                 let className = keyToClassNames[num];
                 if (
                   idx === row1.length - 1 &&
@@ -326,8 +404,8 @@ function App() {
                   ? "horizontal-on-vertical-branch"
                   : "";
                 const lower =
-                  idx === row1.length - 1 &&
-                  HORIZONTAL_CLASSES.has(keyToClassNames[row2[0]])
+                  idx === row2.length - 1 &&
+                  HORIZONTAL_CLASSES.has(keyToClassNames[row3[0]])
                     ? "lower"
                     : "";
                 return (
@@ -348,7 +426,7 @@ function App() {
               })}
             </div>
             <div className="hand">
-              {row2.map((num, idx) => {
+              {row3.map((num, idx) => {
                 const className = keyToClassNames[num];
                 const hoverClass = hoveredDomino === num ? "domino-hover" : "";
 
@@ -368,39 +446,87 @@ function App() {
               })}
             </div>
             <div className="bottom-domino-row">
-              {row3.map((num, idx) => {
-                const hoverClass = hoveredDomino === num ? "domino-hover" : "";
-                let className = keyToClassNames[num];
-                if (idx === 0 && HORIZONTAL_CLASSES.has(className)) {
-                  className = "domino-vertical";
-                }
-                const horizontalOnVerticalBranch = HORIZONTAL_CLASSES.has(
-                  className
-                )
-                  ? "horizontal-on-vertical-branch"
-                  : "";
-                const higher =
-                  idx === 0 &&
-                  HORIZONTAL_CLASSES.has(keyToClassNames[row2[row2.length - 1]])
-                    ? "higher"
+              <div className="bottom-domino-row">
+                {row4.map((num, idx) => {
+                  const hoverClass =
+                    hoveredDomino === num ? "domino-hover" : "";
+                  let className = keyToClassNames[num];
+                  if (idx === 0 && HORIZONTAL_CLASSES.has(className)) {
+                    className = "domino-vertical";
+                  }
+                  const horizontalOnVerticalBranch = HORIZONTAL_CLASSES.has(
+                    className
+                  )
+                    ? "horizontal-on-vertical-branch"
+                    : "";
+                  const higher =
+                    idx === 0 &&
+                    HORIZONTAL_CLASSES.has(
+                      keyToClassNames[row3[row3.length - 1]]
+                    )
+                      ? "higher"
+                      : "";
+
+                  return (
+                    <Domino
+                      dominoKey={num}
+                      className={classNames(
+                        className,
+                        horizontalOnVerticalBranch,
+                        higher,
+                        hoverClass
+                      )}
+                      vals={keyToVals[num]}
+                      isOnBoard={true}
+                      onMouseOver={handleOnMouseOver}
+                      idx={idx}
+                    />
+                  );
+                })}
+              </div>
+              <div class="row-5">
+                {row5.map((num, idx) => {
+                  const hoverClass =
+                    hoveredDomino === num ? "domino-hover" : "";
+                  let className = keyToClassNames[num];
+                  if (idx === 0 && !HORIZONTAL_CLASSES.has(className)) {
+                    className = "domino-left-high";
+                  }
+                  const horizontalOnVerticalBranch = HORIZONTAL_CLASSES.has(
+                    className
+                  )
+                    ? "horizontal-on-vertical-branch"
+                    : "";
+                  const higher =
+                    idx === 0 &&
+                    HORIZONTAL_CLASSES.has(
+                      keyToClassNames[row2[row2.length - 1]]
+                    )
+                      ? "higher"
+                      : "";
+
+                  const marginClass = HORIZONTAL_CLASSES.has(className)
+                    ? "middle-row-horizontal-margin"
                     : "";
 
-                return (
-                  <Domino
-                    dominoKey={num}
-                    className={classNames(
-                      className,
-                      horizontalOnVerticalBranch,
-                      higher,
-                      hoverClass
-                    )}
-                    vals={keyToVals[num]}
-                    isOnBoard={true}
-                    onMouseOver={handleOnMouseOver}
-                    idx={idx}
-                  />
-                );
-              })}
+                  return (
+                    <Domino
+                      dominoKey={num}
+                      className={classNames(
+                        className,
+                        // horizontalOnVerticalBranch,
+                        higher,
+                        hoverClass,
+                        marginClass
+                      )}
+                      vals={keyToVals[num]}
+                      isOnBoard={true}
+                      onMouseOver={handleOnMouseOver}
+                      idx={idx}
+                    />
+                  );
+                })}
+              </div>
             </div>
           </div>
           <div className="hand">
@@ -418,7 +544,6 @@ function App() {
             })}
           </div>
           <button onClick={handleComputerStep}>Pass</button>
-
         </div>
       </div>
     </div>
