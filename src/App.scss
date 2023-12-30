@@ -1,3 +1,6 @@
+$domino-height: 60px;
+$seven: 14px;
+
 .App {
   text-align: center;
   background-color: #282c34;
@@ -10,15 +13,6 @@
   color: white;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-
-.App-link {
-  color: #61dafb;
-}
 
 @keyframes App-logo-spin {
   from {
@@ -52,29 +46,31 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
+  height: calc(2 * $domino-height);
+
 }
 
 .domino-left-low {
-  height: 30px;
+  height: $domino-height;
   rotate: -90deg;
   margin: 1px 1px;
 }
 
 .domino-left-high {
-  height: 30px;
+  height: $domino-height;
   rotate: 90deg;
   margin: 1px 1px;
 
 }
 
 .domino-vertical {
-  height: 30px;
+  height: $domino-height;
   margin: 1px 1px;
 
 }
 
 .domino-upsidedown {
-  height: 30px;
+  height: $domino-height;
   rotate: 180deg;
   margin: 1px 1px;
 }
@@ -88,15 +84,13 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 210px;
+  height: 400px;
 }
 
 .played-cards {
-  /* height: 250px; */
   display: flex;
   flex-direction: column;
   justify-content: center;
-  /* justify-self: center; */
 }
 
 .top-domino-row {
@@ -111,11 +105,22 @@
   display: flex;
   flex-direction: column;
   align-self: flex-end;
+  margin-left: -14px;
+
+}
+
+.row-4 {
+display: flex;
+flex-direction: column;
+align-self: flex-end;
+margin-top: -60px;
+
+
+
 }
 
 .middle-row-horizontal-margin {
-  margin: 0 7px;
-
+  margin: 0 $seven;
 }
 
 .horizontal-on-vertical-branch {
@@ -124,31 +129,27 @@
 }
 
 .lower {
-  margin-bottom: -7px;
+  margin-bottom: -14px;
 
 }
 
 .higher {
-  margin-top: -7px;
+  margin-top: -14px;
 }
 
 .row-1 {
   display: flex;
   flex-direction: row-reverse;
   align-self: flex-start;
-  margin-bottom: -7px;
+  margin-bottom: -$seven;
 }
 
 .row-5 {
   display: flex;
   flex-direction: row-reverse;
-  margin-top: -7px;
+  margin-top: -$seven;
 }
 
 .pass-button {
   margin-top: 50px;
-}
-
-.bottom-row-of-board {
-  /* justify-self: flex-end; */
 }

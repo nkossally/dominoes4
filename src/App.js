@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import { useState, useEffect, useCallback, useReducer } from "react";
 import { Button } from "@mui/material";
-import "./App.css";
+import "./App.scss";
 import Domino from "./components/Domino";
 import InstructionsModal from "./components/Modal";
 import {
@@ -12,15 +12,7 @@ import {
 } from "./consts";
 
 const passButtonStyle = {
-  // position: "absolute",
-  // top: "50%",
-  // left: "50%",
-  // transform: "translate(-50%, -50%)",
-  // width: 400,
-  // bgcolor: "background.paper",
-  // border: "2px solid #000",
-  // boxShadow: 24,
-  // p: 4,
+
   "margin-top": "5px",
   "font-size": "10px",
 };
@@ -331,7 +323,6 @@ function App() {
 
   return (
     <div className="App">
-      <div className="App-header">
         {/* <button onClick={handleResetGame}>Reset Game</button> */}
         <InstructionsModal />
         <div className="hand">
@@ -385,11 +376,6 @@ function App() {
                 }
                 const hoverClass = hoveredDomino === num ? "domino-hover" : "";
 
-                const horizontalOnVerticalBranch = HORIZONTAL_CLASSES.has(
-                  className
-                )
-                  ? "horizontal-on-vertical-branch"
-                  : "";
                 const lower =
                   idx === row2.length - 1 &&
                   HORIZONTAL_CLASSES.has(keyToClassNames[row3[0]])
@@ -401,7 +387,6 @@ function App() {
                     className={classNames(
                       className,
                       hoverClass,
-                      horizontalOnVerticalBranch,
                       lower
                     )}
                     vals={keyToVals[num]}
@@ -433,7 +418,7 @@ function App() {
               })}
             </div>
             <div className="bottom-domino-row">
-              <div className="bottom-domino-row">
+              <div className="row-4">
                 {row4.map((num, idx) => {
                   const hoverClass =
                     hoveredDomino === num ? "domino-hover" : "";
@@ -479,11 +464,6 @@ function App() {
                   if (idx === 0 && !HORIZONTAL_CLASSES.has(className)) {
                     className = "domino-left-high";
                   }
-                  const horizontalOnVerticalBranch = HORIZONTAL_CLASSES.has(
-                    className
-                  )
-                    ? "horizontal-on-vertical-branch"
-                    : "";
                   const higher =
                     idx === 0 &&
                     HORIZONTAL_CLASSES.has(
@@ -501,7 +481,6 @@ function App() {
                       dominoKey={num}
                       className={classNames(
                         className,
-                        // horizontalOnVerticalBranch,
                         higher,
                         hoverClass,
                         marginClass
@@ -538,7 +517,6 @@ function App() {
         >
           Pass
         </Button>
-      </div>
     </div>
   );
 }
