@@ -4,11 +4,11 @@ $seven: 14px;
 .App {
   text-align: center;
   background-color: #282c34;
+  // background-color: #2b2017;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* justify-content: center; */
   font-size: calc(10px + 2vmin);
   color: white;
 }
@@ -46,8 +46,7 @@ $seven: 14px;
   display: flex;
   flex-direction: row;
   justify-content: center;
-  height: calc(2 * $domino-height);
-
+  height: $domino-height;
 }
 
 .domino-left-low {
@@ -105,18 +104,13 @@ $seven: 14px;
   display: flex;
   flex-direction: column;
   align-self: flex-end;
-  margin-left: -14px;
-
+  // margin-left: -14px;
 }
 
 .row-4 {
 display: flex;
 flex-direction: column;
 align-self: flex-end;
-margin-top: -60px;
-
-
-
 }
 
 .middle-row-horizontal-margin {
@@ -152,4 +146,8 @@ margin-top: -60px;
 
 .pass-button {
   margin-top: 50px;
+}
+
+.slight-vertical-margin{
+  margin: 5px 0px;
 }

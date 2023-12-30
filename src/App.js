@@ -12,9 +12,11 @@ import {
 } from "./consts";
 
 const passButtonStyle = {
+  "margin-top": "15px",
+  // "font-size": "10px",
+  color: "#00e0ff",
+  "border-color": "#00e0ff",
 
-  "margin-top": "5px",
-  "font-size": "10px",
 };
 
 function App() {
@@ -323,71 +325,123 @@ function App() {
 
   return (
     <div className="App">
-        {/* <button onClick={handleResetGame}>Reset Game</button> */}
-        <InstructionsModal />
-        <div className="hand">
-          {computerHand.map((num) => {
-            return (
-              <Domino
-                dominoKey={num}
-                vals={keyToVals[num]}
-                className="domino-vertical"
-                isOnBoard={false}
-                isComputer={true}
-              />
-            );
-          })}
-        </div>
-        <div className="board">
-          <div className="played-cards">
-            <div className="row-1">
-              {row1.map((num, idx) => {
+      {/* <button onClick={handleResetGame}>Reset Game</button> */}
+      <InstructionsModal />
+      <div className="hand slight-vertical-margin">
+        {computerHand.map((num) => {
+          return (
+            <Domino
+              dominoKey={num}
+              vals={keyToVals[num]}
+              className="domino-vertical"
+              isOnBoard={false}
+              isComputer={true}
+            />
+          );
+        })}
+      </div>
+      <div className="board">
+        <div className="played-cards">
+          <div className="row-1">
+            {row1.map((num, idx) => {
+              const hoverClass = hoveredDomino === num ? "domino-hover" : "";
+              let className = keyToClassNames[num];
+              if (
+                idx === row1.length - 1 &&
+                !HORIZONTAL_CLASSES.has(className)
+              ) {
+                className = "domino-left-high";
+              }
+              const marginClass = HORIZONTAL_CLASSES.has(className)
+                ? "middle-row-horizontal-margin"
+                : "";
+              return (
+                <Domino
+                  dominoKey={num}
+                  className={classNames(className, hoverClass, marginClass)}
+                  vals={keyToVals[num]}
+                  isOnBoard={true}
+                  onMouseOver={handleOnMouseOver}
+                  idx={idx}
+                />
+              );
+            })}
+          </div>
+          <div className="top-domino-row">
+            {row2.map((num, idx) => {
+              let className = keyToClassNames[num];
+              if (
+                idx === row1.length - 1 &&
+                HORIZONTAL_CLASSES.has(className)
+              ) {
+                className = "domino-vertical";
+              }
+              const hoverClass = hoveredDomino === num ? "domino-hover" : "";
+
+              const lower =
+                idx === row2.length - 1 &&
+                HORIZONTAL_CLASSES.has(keyToClassNames[row3[0]])
+                  ? "lower"
+                  : "";
+              return (
+                <Domino
+                  dominoKey={num}
+                  className={classNames(className, hoverClass, lower)}
+                  vals={keyToVals[num]}
+                  isOnBoard={true}
+                  onMouseOver={handleOnMouseOver}
+                  idx={idx}
+                />
+              );
+            })}
+          </div>
+          <div className="hand">
+            {row3.map((num, idx) => {
+              const className = keyToClassNames[num];
+              const hoverClass = hoveredDomino === num ? "domino-hover" : "";
+
+              const marginClass = HORIZONTAL_CLASSES.has(className)
+                ? "middle-row-horizontal-margin"
+                : "";
+              return (
+                <Domino
+                  dominoKey={num}
+                  className={classNames(className, hoverClass, marginClass)}
+                  vals={keyToVals[num]}
+                  isOnBoard={true}
+                  onMouseOver={handleOnMouseOver}
+                  idx={idx}
+                />
+              );
+            })}
+          </div>
+          <div className="bottom-domino-row">
+            <div className="row-4">
+              {row4.map((num, idx) => {
                 const hoverClass = hoveredDomino === num ? "domino-hover" : "";
                 let className = keyToClassNames[num];
-                if (
-                  idx === row1.length - 1 &&
-                  !HORIZONTAL_CLASSES.has(className)
-                ) {
-                  className = "domino-left-high";
-                }
-                const marginClass = HORIZONTAL_CLASSES.has(className)
-                  ? "middle-row-horizontal-margin"
-                  : "";
-                return (
-                  <Domino
-                    dominoKey={num}
-                    className={classNames(className, hoverClass, marginClass)}
-                    vals={keyToVals[num]}
-                    isOnBoard={true}
-                    onMouseOver={handleOnMouseOver}
-                    idx={idx}
-                  />
-                );
-              })}
-            </div>
-            <div className="top-domino-row">
-              {row2.map((num, idx) => {
-                let className = keyToClassNames[num];
-                if (
-                  idx === row1.length - 1 &&
-                  HORIZONTAL_CLASSES.has(className)
-                ) {
+                if (idx === 0 && HORIZONTAL_CLASSES.has(className)) {
                   className = "domino-vertical";
                 }
-                const hoverClass = hoveredDomino === num ? "domino-hover" : "";
-
-                const lower =
-                  idx === row2.length - 1 &&
-                  HORIZONTAL_CLASSES.has(keyToClassNames[row3[0]])
-                    ? "lower"
+                const horizontalOnVerticalBranch = HORIZONTAL_CLASSES.has(
+                  className
+                )
+                  ? "horizontal-on-vertical-branch"
+                  : "";
+                const higher =
+                  idx === 0 &&
+                  HORIZONTAL_CLASSES.has(keyToClassNames[row3[row3.length - 1]])
+                    ? "higher"
                     : "";
+
                 return (
                   <Domino
                     dominoKey={num}
                     className={classNames(
                       className,
-                      hoverClass,
-                      lower
+                      horizontalOnVerticalBranch,
+                      higher,
+                      hoverClass
                     )}
                     vals={keyToVals[num]}
                     isOnBoard={true}
@@ -397,18 +451,32 @@ function App() {
                 );
               })}
             </div>
-            <div className="hand">
-              {row3.map((num, idx) => {
-                const className = keyToClassNames[num];
+            <div class="row-5">
+              {row5.map((num, idx) => {
                 const hoverClass = hoveredDomino === num ? "domino-hover" : "";
+                let className = keyToClassNames[num];
+                if (idx === 0 && !HORIZONTAL_CLASSES.has(className)) {
+                  className = "domino-left-high";
+                }
+                const higher =
+                  idx === 0 &&
+                  HORIZONTAL_CLASSES.has(keyToClassNames[row2[row2.length - 1]])
+                    ? "higher"
+                    : "";
 
                 const marginClass = HORIZONTAL_CLASSES.has(className)
                   ? "middle-row-horizontal-margin"
                   : "";
+
                 return (
                   <Domino
                     dominoKey={num}
-                    className={classNames(className, hoverClass, marginClass)}
+                    className={classNames(
+                      className,
+                      higher,
+                      hoverClass,
+                      marginClass
+                    )}
                     vals={keyToVals[num]}
                     isOnBoard={true}
                     onMouseOver={handleOnMouseOver}
@@ -417,106 +485,33 @@ function App() {
                 );
               })}
             </div>
-            <div className="bottom-domino-row">
-              <div className="row-4">
-                {row4.map((num, idx) => {
-                  const hoverClass =
-                    hoveredDomino === num ? "domino-hover" : "";
-                  let className = keyToClassNames[num];
-                  if (idx === 0 && HORIZONTAL_CLASSES.has(className)) {
-                    className = "domino-vertical";
-                  }
-                  const horizontalOnVerticalBranch = HORIZONTAL_CLASSES.has(
-                    className
-                  )
-                    ? "horizontal-on-vertical-branch"
-                    : "";
-                  const higher =
-                    idx === 0 &&
-                    HORIZONTAL_CLASSES.has(
-                      keyToClassNames[row3[row3.length - 1]]
-                    )
-                      ? "higher"
-                      : "";
-
-                  return (
-                    <Domino
-                      dominoKey={num}
-                      className={classNames(
-                        className,
-                        horizontalOnVerticalBranch,
-                        higher,
-                        hoverClass
-                      )}
-                      vals={keyToVals[num]}
-                      isOnBoard={true}
-                      onMouseOver={handleOnMouseOver}
-                      idx={idx}
-                    />
-                  );
-                })}
-              </div>
-              <div class="row-5">
-                {row5.map((num, idx) => {
-                  const hoverClass =
-                    hoveredDomino === num ? "domino-hover" : "";
-                  let className = keyToClassNames[num];
-                  if (idx === 0 && !HORIZONTAL_CLASSES.has(className)) {
-                    className = "domino-left-high";
-                  }
-                  const higher =
-                    idx === 0 &&
-                    HORIZONTAL_CLASSES.has(
-                      keyToClassNames[row2[row2.length - 1]]
-                    )
-                      ? "higher"
-                      : "";
-
-                  const marginClass = HORIZONTAL_CLASSES.has(className)
-                    ? "middle-row-horizontal-margin"
-                    : "";
-
-                  return (
-                    <Domino
-                      dominoKey={num}
-                      className={classNames(
-                        className,
-                        higher,
-                        hoverClass,
-                        marginClass
-                      )}
-                      vals={keyToVals[num]}
-                      isOnBoard={true}
-                      onMouseOver={handleOnMouseOver}
-                      idx={idx}
-                    />
-                  );
-                })}
-              </div>
-            </div>
           </div>
         </div>
-        <div className="hand">
-          {hand.map((num) => {
-            return (
-              <Domino
-                dominoKey={num}
-                vals={keyToVals[num]}
-                className="domino-vertical"
-                onStop={(e) => handleStop(num)}
-                isOnBoard={false}
-                isComputersTurn={isComputersTurn}
-              />
-            );
-          })}
-        </div>
-        <Button
-          variant="contained"
-          sx={passButtonStyle}
-          onClick={handleComputerStep}
-        >
-          Pass
-        </Button>
+      </div>
+      <div className="hand slight-vertical-margin">
+        {hand.map((num) => {
+          return (
+            <Domino
+              dominoKey={num}
+              vals={keyToVals[num]}
+              className="domino-vertical"
+              onStop={(e) => handleStop(num)}
+              isOnBoard={false}
+              isComputersTurn={isComputersTurn}
+            />
+          );
+        })}
+      </div>
+      <Button
+        variant="outlined"
+        color="info"
+        size="medium"
+        sx={passButtonStyle}
+        onClick={handleComputerStep}
+        disabled={hand.length === 0}
+      >
+        Pass
+      </Button>
     </div>
   );
 }
