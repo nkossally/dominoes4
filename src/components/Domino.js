@@ -62,13 +62,13 @@ const mapToPic = {
   28: _6_6,
 };
 
-const Domino = ({ dominoKey, className, onStop, isOnBoard, onMouseDown, onMouseOver, idx, isComputer}) => {
+const Domino = ({ dominoKey, isFaceUp, className, onStop, isOnBoard, onMouseDown, onMouseOver, idx, isComputer}) => {
   if ( isComputer) {
     return (
       <img
         draggable="false"
         className={className}
-        src={blank}
+        src={isFaceUp ?  mapToPic[dominoKey]: blank}
         alt="domino"
         onMouseOver={onMouseOver}
         dominoKey={dominoKey}

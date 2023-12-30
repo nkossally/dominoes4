@@ -3,20 +3,26 @@ import { useState, useEffect, useCallback, useReducer } from "react";
 import { Button } from "@mui/material";
 import "./App.scss";
 import Domino from "./components/Domino";
-import InstructionsModal from "./components/Modal";
+import InstructionsModal from "./components/InstructionsModal";
+import GameOverModal from "./components/GameOverModal";
 import {
   DOMINO_KEYS_TO_VALS,
   HORIZONTAL_CLASSES,
   NUM_DOMINOES,
   MIDDLE_ROW_MAX,
 } from "./consts";
+import {
+  getClassNameForRow1,
+  getClassNameForRow2,
+  getClassNameForRow3,
+  getClassNameForRow4,
+  getClassNameForRow5,
+} from "./util";
 
 const passButtonStyle = {
   "margin-top": "15px",
-  // "font-size": "10px",
   color: "#00e0ff",
   "border-color": "#00e0ff",
-
 };
 
 function App() {
@@ -32,6 +38,8 @@ function App() {
   const [middleBounds, setMiddleBounds] = useState(null);
   const [startNewGame, setStartNewGame] = useState(true);
   const [_, forceUpdate] = useReducer((x) => x + 1, 0);
+  const [flippedComputerDomino, setFlippedComputerDomino] = useState(null);
+  const [isGameOver, setIsGameOver] = useState(false);
 
   useEffect(() => {
     if (startNewGame) {
@@ -101,8 +109,10 @@ function App() {
     for (let i = 0; i < dominoHand.length; i++) {
       if (result) break;
       const vals = keyToVals[computerHand[i]];
+      if (!vals) break;
       for (let j = 0; j < playedCards.length; j++) {
         const playedCardNums = keyToVals[playedCards[j]];
+        if (!playedCardNums) break;
         for (let k = 0; k < vals.length; k++) {
           if (result) break;
           for (let m = 0; m < playedCardNums.length; m++) {
@@ -120,13 +130,13 @@ function App() {
 
   const handleComputerStep = () => {
     let matchingDominos = getMoveFromHand(computerHand);
-
+    if (matchingDominos) setFlippedComputerDomino(matchingDominos[0]);
     setTimeout(() => {
       if (matchingDominos) {
         tryPlayDomino(matchingDominos[0], matchingDominos[1], true);
       }
       setIsComputersTurn(false);
-    }, 30);
+    }, 500);
   };
 
   const handleStop = (num) => {
@@ -215,6 +225,12 @@ function App() {
 
     newKeyToVals[playedCardKey] = hoveredDominoVals;
     setKeyToVals(newKeyToVals);
+    if (
+      (isComputer && computerHand.length === 1) ||
+      (!isComputer && hand.length === 1)
+    ) {
+      setIsGameOver(true);
+    }
     return true;
   };
 
@@ -250,83 +266,11 @@ function App() {
     row5 = row4.splice(2);
   }
 
-  const getClassNameForRow3 = (matchVal, otherVal, isRightOfBlank) => {
-    let className;
-    if (isRightOfBlank) {
-      if (matchVal > otherVal) {
-        className = "domino-left-high";
-      } else if (matchVal < otherVal) {
-        className = "domino-left-low";
-      }
-    } else {
-      if (matchVal > otherVal) {
-        className = "domino-left-low";
-      } else if (matchVal < otherVal) {
-        className = "domino-left-high";
-      }
-    }
-    if (matchVal === otherVal) {
-      className = "domino-vertical";
-    }
-    return className;
-  };
-
-  const getClassNameForRow2 = (matchVal, otherVal) => {
-    let className;
-    if (matchVal < otherVal) {
-      className = "domino-upsidedown";
-    } else if (matchVal > otherVal) {
-      className = "domino-vertical";
-    } else {
-      className = "domino-vertical";
-    }
-    return className;
-  };
-
-  const getClassNameForRow4 = (matchVal, otherVal) => {
-    let className;
-    if (matchVal < otherVal) {
-      className = "domino-vertical";
-    } else if (matchVal > otherVal) {
-      className = "domino-upsidedown";
-    } else {
-      className = "domino-vertical";
-    }
-    return className;
-  };
-  const getClassNameForRow1 = (matchVal, otherVal) => {
-    let className;
-    if (matchVal > otherVal) {
-      className = "domino-left-high";
-    } else if (matchVal < otherVal) {
-      className = "domino-left-low";
-    }
-    if (matchVal === otherVal) {
-      className = "domino-vertical";
-    }
-    return className;
-  };
-
-  const getClassNameForRow5 = (matchVal, otherVal) => {
-    let className;
-
-    if (matchVal > otherVal) {
-      className = "domino-left-low";
-    } else if (matchVal < otherVal) {
-      className = "domino-left-high";
-    }
-
-    if (matchVal === otherVal) {
-      className = "domino-vertical";
-    }
-    return className;
-  };
-  console.log(keyToClassNames);
-
   return (
     <div className="App">
       {/* <button onClick={handleResetGame}>Reset Game</button> */}
       <InstructionsModal />
+      {isGameOver ? <GameOverModal /> : ""}
       <div className="hand slight-vertical-margin">
         {computerHand.map((num) => {
           return (
@@ -336,6 +280,7 @@ function App() {
               className="domino-vertical"
               isOnBoard={false}
               isComputer={true}
+              isFaceUp={num === flippedComputerDomino}
             />
           );
         })}

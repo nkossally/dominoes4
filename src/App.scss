@@ -4,7 +4,6 @@ $seven: 14px;
 .App {
   text-align: center;
   background-color: #282c34;
-  // background-color: #2b2017;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -24,24 +23,6 @@ $seven: 14px;
   }
 }
 
-.domino-button {
-  display: inline-block;
-  border: none;
-  padding: 0;
-  margin: 0;
-  text-decoration: none;
-  background: none;
-  color: #ffffff;
-  /* font-family: sans-serif;
-  font-size: 1rem; */
-  cursor: pointer;
-  text-align: center;
-  /* transition: background 250ms ease-in-out, 
-              transform 150ms ease; */
-  -webkit-appearance: none;
-  -moz-appearance: none;
-}
-
 .hand {
   display: flex;
   flex-direction: row;
@@ -53,18 +34,21 @@ $seven: 14px;
   height: $domino-height;
   rotate: -90deg;
   margin: 1px 1px;
+  border: 1px solid transparent;
 }
 
 .domino-left-high {
   height: $domino-height;
   rotate: 90deg;
   margin: 1px 1px;
+  border: 1px solid transparent;
 
 }
 
 .domino-vertical {
   height: $domino-height;
   margin: 1px 1px;
+  border: 1px solid transparent;
 
 }
 
@@ -72,6 +56,7 @@ $seven: 14px;
   height: $domino-height;
   rotate: 180deg;
   margin: 1px 1px;
+  border: 1px solid transparent;
 }
 
 .domino-hover {
