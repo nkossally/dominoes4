@@ -18,7 +18,9 @@ import {
   getClassNameForRow5,
 } from "./util";
 import { useSelector, useDispatch } from 'react-redux'
-import { modifyDominoVals, resetVals } from './valsSlice'
+import { modifyDominoVals, resetVals } from './store/valsSlice'
+import { modifyComputerHand } from './store/computerSlice'
+import { modifyHand } from './store/handSlice'
 
 const passButtonStyle = {
   "margin": "20px 0px",
@@ -38,8 +40,6 @@ const resetButtonStyle = {
 };
 
 function App() {
-  const [computerHand, setComputerHand] = useState([]);
-  const [hand, setHand] = useState([]);
   const [playedCards, setPlayedCards] = useState([1]);
   const [hoveredDomino, setHoveredDomino] = useState(null);
   const [keyToClassNames, setKeyToClassNames] = useState({
@@ -52,6 +52,8 @@ function App() {
   const [isGameOver, setIsGameOver] = useState(false);
   const dispatch = useDispatch()
   const keyToVals = useSelector((state) => state.vals.vals)
+  const hand = useSelector((state) => state.hand.hand)
+  const computerHand = useSelector((state) => state.computerHand.computerHand)
 
   useEffect(() =>{
     if(!startNewGame){
@@ -102,8 +104,8 @@ function App() {
         hand2.push(i);
       }
     }
-    setComputerHand(hand1);
-    setHand(hand2);
+    dispatch(modifyComputerHand(hand1));
+    dispatch(modifyHand(hand2));
     if (hand1.length === NUM_DOMINOES / 2) {
       setIsComputersTurn(true);
     }
@@ -191,9 +193,9 @@ function App() {
     const idx = newHand.indexOf(dominoKey);
     newHand.splice(idx, 1);
     if (isComputer) {
-      setComputerHand(newHand);
+      dispatch(modifyComputerHand(newHand));
     } else {
-      setHand(newHand);
+      dispatch(modifyHand(newHand));
     }
 
     let otherVal;

@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import {DOMINO_KEYS_TO_VALS} from "./consts"
+import {DOMINO_KEYS_TO_VALS} from "../consts"
 
 export const valsSlice = createSlice({
   name: 'vals',
