@@ -1,9 +1,10 @@
 {
   "files": {
-    "main.css": "/dominoes4/static/css/main.7f007f2b.css",
-    "main.js": "/dominoes4/static/js/main.70db1b4d.js",
+    "main.css": "/dominoes4/static/css/main.6e8de800.css",
+    "main.js": "/dominoes4/static/js/main.172ab58e.js",
     "static/media/0 0.png": "/dominoes4/static/media/0 0.1bbf5a282e237fd9b236.png",
     "static/media/5 6.png": "/dominoes4/static/media/5 6.641c860e2c374943d778.png",
+    "static/media/info icon.png": "/dominoes4/static/media/info icon.82c90b46274d7dc674f1.png",
     "static/media/6 6.png": "/dominoes4/static/media/6 6.bce12161c11e4296178f.png",
     "static/media/4 5.png": "/dominoes4/static/media/4 5.704a35cb696d703ddf45.png",
     "static/media/4 6.png": "/dominoes4/static/media/4 6.595893cb25f9978fa439.png",
@@ -32,11 +33,11 @@
     "static/media/blank domino.png": "/dominoes4/static/media/blank domino.2e78b048f79b490a685f.png",
     "static/media/0 1.png": "/dominoes4/static/media/0 1.1d88bf2245580f8a12e5.png",
     "index.html": "/dominoes4/index.html",
-    "main.7f007f2b.css.map": "/dominoes4/static/css/main.7f007f2b.css.map",
-    "main.70db1b4d.js.map": "/dominoes4/static/js/main.70db1b4d.js.map"
+    "main.6e8de800.css.map": "/dominoes4/static/css/main.6e8de800.css.map",
+    "main.172ab58e.js.map": "/dominoes4/static/js/main.172ab58e.js.map"
   },
   "entrypoints": [
-    "static/css/main.7f007f2b.css",
-    "static/js/main.70db1b4d.js"
+    "static/css/main.6e8de800.css",
+    "static/js/main.172ab58e.js"
   ]
 }
