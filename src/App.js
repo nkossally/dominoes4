@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { useState, useEffect, useCallback, useReducer } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@mui/material";
 import "./App.scss";
 import Domino from "./components/Domino";
@@ -17,13 +17,23 @@ import {
   getClassNameForRow4,
   getClassNameForRow5,
 } from "./util";
-
 import { useSelector, useDispatch } from 'react-redux'
 import { modifyDominoVals, resetVals } from './valsSlice'
 
 const passButtonStyle = {
   "margin-top": "15px",
   color: "#00e0ff",
+  "border-color": "#00e0ff",
+  "font-size": 20,
+};
+
+const resetButtonStyle = {
+  position: "absolute",
+  top: 5,
+  left: 5,
+  "text-transform": "capitalize",
+  color: "#00e0ff",
+  "font-size": 20,
   "border-color": "#00e0ff",
 };
 
@@ -272,11 +282,6 @@ function App() {
 
   return (
     <div className="App">
-            <button onClick={() =>{
-              dispatch(modifyDominoVals("pizza", "potato"))
-            }}>Play</button>
-
-      <button onClick={setUpGame}>Reset Game</button>
       <InstructionsModal />
       {isGameOver ? <GameOverModal /> : ""}
       <div className="hand slight-vertical-margin">
@@ -464,6 +469,9 @@ function App() {
         disabled={hand.length === 0}
       >
         Pass
+      </Button>
+      <Button variant="outlined" sx={resetButtonStyle} onClick={setUpGame }>
+        New Game
       </Button>
     </div>
   );

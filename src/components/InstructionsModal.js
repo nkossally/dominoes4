@@ -14,7 +14,8 @@ export default function InstructionsModal() {
     top: 5,
     right: 5,
     "text-transform": "capitalize",
-    color: "#00e0ff"
+    color: "#00e0ff",
+    "font-size": 20,
   };
 
   const style = {
@@ -32,7 +33,7 @@ export default function InstructionsModal() {
   return (
     <div>
       <Button sx={buttonStyle} onClick={handleOpen}>
-        Instructions
+        Info
       </Button>
       <Modal
         open={open}
