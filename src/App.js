@@ -189,7 +189,7 @@ function App() {
     if (playedCardsIdx === 0) {
       let className;
       if (playedCards.length >= MIDDLE_ROW_MAX) {
-        if (middleBounds && playedCards.indexOf(middleBounds[0]) >= 2) {
+        if (middleBounds && playedCards.indexOf(middleBounds[0]) >= 3) {
           className = getClassNameForRow1(matchVal, otherVal);
         } else {
           className = getClassNameForRow2(matchVal, otherVal);
@@ -204,7 +204,7 @@ function App() {
       if (playedCards.length >= MIDDLE_ROW_MAX) {
         if (
           middleBounds &&
-          playedCards.indexOf(middleBounds[1]) < playedCards.length - 2
+          playedCards.indexOf(middleBounds[1]) < playedCards.length - 3
         ) {
           className = getClassNameForRow5(matchVal, otherVal);
         } else {
@@ -259,11 +259,11 @@ function App() {
         sawSecondBound = true;
     }
   }
-  if (row2.length > 2) {
-    row1 = row2.splice(0, row2.length - 2);
+  if (row2.length > 3) {
+    row1 = row2.splice(0, row2.length - 3);
   }
-  if (row4.length > 2) {
-    row5 = row4.splice(2);
+  if (row4.length > 3) {
+    row5 = row4.splice(3);
   }
 
   return (
@@ -312,7 +312,7 @@ function App() {
               );
             })}
           </div>
-          <div className="top-domino-row">
+          <div className="row-2">
             {row2.map((num, idx) => {
               let className = keyToClassNames[num];
               if (

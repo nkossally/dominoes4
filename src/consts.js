@@ -30,7 +30,7 @@ export const DOMINO_KEYS_TO_VALS = {
 };
 
 export const NUM_DOMINOES = 28;
-export const MIDDLE_ROW_MAX = 10;
+export const MIDDLE_ROW_MAX = 12;
 export const HORIZONTAL_CLASSES = new Set([
   "domino-left-high",
   "domino-left-low",
