@@ -21,7 +21,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { modifyDominoVals, resetVals } from './valsSlice'
 
 const passButtonStyle = {
-  "margin-top": "15px",
+  "margin": "20px 0px",
   color: "#00e0ff",
   "border-color": "#00e0ff",
   "font-size": 20,
@@ -53,7 +53,20 @@ function App() {
   const dispatch = useDispatch()
   const keyToVals = useSelector((state) => state.vals.vals)
 
-
+  useEffect(() =>{
+    if(!startNewGame){
+      if(hand.length === 0 || computerHand.length === 0){
+        setIsGameOver(true);
+      } else {
+        const computerMoves = getMoveFromHand(computerHand)
+        const playerMoves = getMoveFromHand(hand)
+        if(!computerMoves && !playerMoves){
+          setIsGameOver(true);
+        }
+      }
+    }
+   
+  },[computerHand, hand])
 
   useEffect(() => {
     if (startNewGame) {
@@ -102,10 +115,6 @@ function App() {
     }
   }, [isComputersTurn]);
 
-  const handleResetGame = () => {
-    setUpGame();
-  };
-
   const handleOnMouseOver = (e) => {
     if (!e.target) return;
     const hoveredDominoKey = parseInt(e.target.getAttribute("dominoKey"));
@@ -143,6 +152,7 @@ function App() {
   };
 
   const handleComputerStep = () => {
+    if(isGameOver) return;
     let matchingDominos = getMoveFromHand(computerHand);
     if (matchingDominos) setFlippedComputerDomino(matchingDominos[0]);
     setTimeout(() => {
@@ -239,12 +249,6 @@ function App() {
 
     newKeyToVals[playedCardKey] = hoveredDominoVals;
     dispatch(modifyDominoVals(newKeyToVals))
-    if (
-      (isComputer && computerHand.length === 1) ||
-      (!isComputer && hand.length === 1)
-    ) {
-      setIsGameOver(true);
-    }
     return true;
   };
 

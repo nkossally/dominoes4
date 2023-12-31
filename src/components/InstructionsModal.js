@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
+import infoIcon from "../images/info icon.png"
 
 export default function InstructionsModal() {
   const [open, setOpen] = React.useState(false);
@@ -33,7 +34,7 @@ export default function InstructionsModal() {
   return (
     <div>
       <Button sx={buttonStyle} onClick={handleOpen}>
-        Info
+        <img src={infoIcon} className="info-icon" />
       </Button>
       <Modal
         open={open}
