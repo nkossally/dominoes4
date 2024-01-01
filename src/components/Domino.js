@@ -73,12 +73,13 @@ const Domino = ({
   onMouseOver,
   idx,
   isComputer,
+  isComputersTurn,
 }) => {
   if (isComputer) {
     return (
       <img
         draggable="false"
-        className={classNames(className, isFaceUp ? "slide-down" : "")}
+        className={classNames(className, isComputersTurn ? "slide-down" : "")}
         src={isFaceUp ? mapToPic[dominoKey] : blank}
         alt="domino"
         onMouseOver={onMouseOver}

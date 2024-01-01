@@ -19,10 +19,14 @@ import { modifyComputerHand } from "./store/computerSlice";
 import { modifyHand } from "./store/handSlice";
 
 const passButtonStyle = {
-  margin: "20px 0px",
+  "margin-left": "40px",
+  "margin-top": "auto",
+  "margin-bottom": "auto",
   color: "#00e0ff",
+  height: "47px",
   "border-color": "#00e0ff",
   "font-size": 20,
+
 };
 
 const resetButtonStyle = {
@@ -129,7 +133,6 @@ function App() {
   };
 
   const getMoveFromHand = (dominoHand) => {
-    console.log(keyToVals);
     let result;
     if (dominoHand.length === 0) return;
     for (let i = 0; i < dominoHand.length; i++) {
@@ -311,6 +314,7 @@ function App() {
               isOnBoard={false}
               isComputer={true}
               isFaceUp={isGameOver || num === flippedComputerDomino}
+              isComputersTurn={isComputersTurn}
             />
           );
         })}
@@ -476,8 +480,7 @@ function App() {
             />
           );
         })}
-      </div>
-      <Button
+              <Button
         variant="outlined"
         color="info"
         size="medium"
@@ -487,6 +490,7 @@ function App() {
       >
         Pass
       </Button>
+      </div>
       <Button
         variant="outlined"
         disabled={startNewGame}
