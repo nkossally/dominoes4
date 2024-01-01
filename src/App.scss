@@ -63,6 +63,12 @@ $seven: 14px;
   height: $domino-height;
 }
 
+.player-hand:hover {
+  background-color: #0061FF;
+  // background-color: #FF00E0;
+  border-radius: 4px;
+}
+
 .domino-left-low {
   height: $domino-height;
   rotate: -90deg;
@@ -90,9 +96,8 @@ $seven: 14px;
 
 .domino-hover {
   background-color: #0061FF;
-  background-color: #FF00E0;
+  // background-color: #FF00E0;
   border-radius: 4px;
-  // background-color: #0061FF;
 
 }
 

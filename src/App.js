@@ -481,13 +481,13 @@ function App() {
           </div>
         </div>
       </div>
-      <div className="hand slight-vertical-margin">
+      <div className={classNames("hand", "slight-vertical-margin")}>
         {hand.map((num) => {
           return (
             <Domino
               dominoKey={num}
               vals={keyToVals[num]}
-              className="domino-vertical"
+              className={classNames("domino-vertical", "player-hand")}
               onStop={(e) => handleStop(num)}
               isOnBoard={false}
               isComputersTurn={isComputersTurn}
