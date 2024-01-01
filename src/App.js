@@ -79,7 +79,6 @@ function App() {
     if (startNewGame) {
       setUpGame();
     }
-    setStartNewGame(false);
   }, [startNewGame]);
 
   const setUpGame = () => {
@@ -91,7 +90,6 @@ function App() {
     setIsGameOver(false)
     setMiddleBounds(null);
     setKeyToClassNames({ 1: "domino-vertical" });
-    setStartNewGame(false);
 
     while (hand1.length + additionalCount < NUM_DOMINOES / 2) {
       const random = Math.random();
@@ -115,6 +113,7 @@ function App() {
     if (hand1.length === NUM_DOMINOES / 2) {
       setIsComputersTurn(true);
     }
+    setStartNewGame(false);
   };
 
   useEffect(() => {
@@ -491,7 +490,7 @@ function App() {
       >
         Pass
       </Button>
-      <Button variant="outlined" sx={resetButtonStyle} onClick={setUpGame }>
+      <Button variant="outlined" disabled={startNewGame} sx={resetButtonStyle} onClick={setUpGame }>
         New Game
       </Button>
     </div>
