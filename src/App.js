@@ -46,14 +46,14 @@ function App() {
   });
   const [isComputersTurn, setIsComputersTurn] = useState(false);
   const [middleBounds, setMiddleBounds] = useState(null);
-  const [startNewGame, setStartNewGame] = useState(true);
+  const [startNewGame, setStartNewGame] = useState(false);
   const [flippedComputerDomino, setFlippedComputerDomino] = useState(null);
   const [isGameOver, setIsGameOver] = useState(false);
   const dispatch = useDispatch();
   const keyToVals = useSelector((state) => state.vals.vals);
   const hand = useSelector((state) => state.hand.hand);
   const computerHand = useSelector((state) => state.computerHand.computerHand);
-  const [playingFirstDomino, setPlayingFirstDomino] = useState(false); 
+  const [isMounting, setIsMounting] = useState(true); 
 
   const checkIfGameOver = () => {
     if (hand.length === 0 || computerHand.length === 0) {
@@ -67,24 +67,25 @@ function App() {
     }
     return false;
   };
+
   useEffect(() => {
-    if (!startNewGame) {
+    if(!isMounting){
       if (checkIfGameOver()) {
         setIsGameOver(true);
-      }
     }
+  }
   }, [computerHand, hand]);
 
   useEffect(() => {
-    if (startNewGame) {
-      setUpGame();
-    }
-  }, [startNewGame]);
+    setUpGame();
+  }, []);
 
   const setUpGame = () => {
+    setStartNewGame(true);
+    setIsMounting(true)
+
     const hand1 = [];
     const hand2 = [];
-    setStartNewGame(true);
     setPlayedCards([])
 
     dispatch(resetVals());
@@ -125,6 +126,7 @@ function App() {
         setIsComputersTurn(true)
       }
       setStartNewGame(false);
+      setIsMounting(false)
 
     }, 1000)
 
