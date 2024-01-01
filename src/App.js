@@ -26,7 +26,6 @@ const passButtonStyle = {
   height: "47px",
   "border-color": "#00e0ff",
   "font-size": 20,
-
 };
 
 const resetButtonStyle = {
@@ -40,7 +39,7 @@ const resetButtonStyle = {
 };
 
 function App() {
-  const [playedCards, setPlayedCards] = useState([1]);
+  const [playedCards, setPlayedCards] = useState([]);
   const [hoveredDomino, setHoveredDomino] = useState(null);
   const [keyToClassNames, setKeyToClassNames] = useState({
     1: "domino-vertical",
@@ -54,6 +53,7 @@ function App() {
   const keyToVals = useSelector((state) => state.vals.vals);
   const hand = useSelector((state) => state.hand.hand);
   const computerHand = useSelector((state) => state.computerHand.computerHand);
+  const [playingFirstDomino, setPlayingFirstDomino] = useState(false); 
 
   const checkIfGameOver = () => {
     if (hand.length === 0 || computerHand.length === 0) {
@@ -84,36 +84,50 @@ function App() {
   const setUpGame = () => {
     const hand1 = [];
     const hand2 = [];
-    let additionalCount = 0;
+    setStartNewGame(true);
+    setPlayedCards([])
+
     dispatch(resetVals());
     setIsComputersTurn(false);
     setIsGameOver(false);
     setMiddleBounds(null);
     setKeyToClassNames({ 1: "domino-vertical" });
 
-    while (hand1.length + additionalCount < NUM_DOMINOES / 2) {
+    while (hand1.length < NUM_DOMINOES / 2) {
       const random = Math.random();
       const num = Math.ceil(random * NUM_DOMINOES);
       if (!hand1.includes(num)) {
-        if (num === 1) {
-          additionalCount = 1;
-        } else {
+        
           hand1.push(num);
         }
       }
-    }
-    setPlayedCards([1]);
-    for (let i = 2; i <= NUM_DOMINOES; i++) {
+    
+    for (let i = 1; i <= NUM_DOMINOES; i++) {
       if (!hand1.includes(i)) {
         hand2.push(i);
       }
     }
+
     dispatch(modifyComputerHand(hand1));
     dispatch(modifyHand(hand2));
-    if (hand1.length === NUM_DOMINOES / 2) {
-      setIsComputersTurn(true);
-    }
-    setStartNewGame(false);
+
+    setTimeout(() =>{
+      setPlayedCards([1]);
+      if(hand1.includes(1)){
+        const newHand1 = Array.from(hand1)
+        newHand1.splice(newHand1.indexOf(1), 1)
+        dispatch(modifyComputerHand(newHand1));
+
+      } else {
+        const newHand2 = Array.from(hand2)
+        newHand2.splice(newHand2.indexOf(1), 1)
+        dispatch(modifyHand(newHand2));
+        setIsComputersTurn(true)
+      }
+      setStartNewGame(false);
+
+    }, 1000)
+
   };
 
   useEffect(() => {
@@ -480,16 +494,16 @@ function App() {
             />
           );
         })}
-              <Button
-        variant="outlined"
-        color="info"
-        size="medium"
-        sx={passButtonStyle}
-        onClick={handleComputerStep}
-        disabled={hand.length === 0}
-      >
-        Pass
-      </Button>
+        <Button
+          variant="outlined"
+          color="info"
+          size="medium"
+          sx={passButtonStyle}
+          onClick={handleComputerStep}
+          disabled={isGameOver}
+        >
+          Pass
+        </Button>
       </div>
       <Button
         variant="outlined"

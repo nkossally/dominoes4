@@ -3,7 +3,8 @@ $seven: 14px;
 
 .App {
   text-align: center;
-  background-color: #282c34;
+    background-color: #282c34;
+
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -25,6 +26,22 @@ $seven: 14px;
 .slide-down {
   animation-duration: 1s;
   animation-name: slideDown;
+}
+
+
+@keyframes slideUp {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(-60px);
+  }
+}
+
+.slide-up {
+  animation-duration: 1s;
+  animation-name: slideUp;
 }
 
 
@@ -50,21 +67,18 @@ $seven: 14px;
   height: $domino-height;
   rotate: -90deg;
   margin: 1px 1px;
-  border: 1px solid transparent;
 }
 
 .domino-left-high {
   height: $domino-height;
   rotate: 90deg;
   margin: 1px 1px;
-  border: 1px solid transparent;
 
 }
 
 .domino-vertical {
   height: $domino-height;
   margin: 1px 1px;
-  border: 1px solid transparent;
 
 }
 
@@ -72,12 +86,12 @@ $seven: 14px;
   height: $domino-height;
   rotate: 180deg;
   margin: 1px 1px;
-  border: 1px solid transparent;
 }
 
 .domino-hover {
   background-color: #0061FF;
   background-color: #FF00E0;
+  border-radius: 4px;
   // background-color: #0061FF;
 
 }
