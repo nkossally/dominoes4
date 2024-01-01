@@ -55,19 +55,24 @@ function App() {
   const hand = useSelector((state) => state.hand.hand)
   const computerHand = useSelector((state) => state.computerHand.computerHand)
 
-  useEffect(() =>{
-    if(!startNewGame){
-      if(hand.length === 0 || computerHand.length === 0){
-        setIsGameOver(true);
-      } else {
-        const computerMoves = getMoveFromHand(computerHand)
-        const playerMoves = getMoveFromHand(hand)
-        if(!computerMoves && !playerMoves){
-          setIsGameOver(true);
-        }
+  const checkIfGameOver = () =>{
+    if(hand.length === 0 || computerHand.length === 0){
+      return true;
+    } else {
+      const computerMoves = getMoveFromHand(computerHand)
+      const playerMoves = getMoveFromHand(hand)
+      if(!computerMoves && !playerMoves){
+        return true;
       }
     }
-   
+    return false
+  }
+  useEffect(() =>{
+    if(!startNewGame){
+      if(checkIfGameOver()){
+        setIsGameOver(true);
+      }
+    }
   },[computerHand, hand])
 
   useEffect(() => {
@@ -155,7 +160,7 @@ function App() {
   };
 
   const handleComputerStep = () => {
-    if(isGameOver) return;
+    if(checkIfGameOver()) return;
     let matchingDominos = getMoveFromHand(computerHand);
     if (matchingDominos) setFlippedComputerDomino(matchingDominos[0]);
     setTimeout(() => {
