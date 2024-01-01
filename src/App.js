@@ -314,7 +314,7 @@ function App() {
               isOnBoard={false}
               isComputer={true}
               isFaceUp={isGameOver || num === flippedComputerDomino}
-              isComputersTurn={isComputersTurn}
+              isMovingToBoard={num === flippedComputerDomino}
             />
           );
         })}
