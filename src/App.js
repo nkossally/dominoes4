@@ -171,6 +171,7 @@ function App() {
   };
 
   const handleStop = (num) => {
+    if(isComputersTurn) return;
     const madePlay = tryPlayDomino(num, hoveredDomino, false);
 
     if (madePlay) setIsComputersTurn(true);
