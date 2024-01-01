@@ -1,4 +1,5 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
+import classNames from "classnames";
 import Draggable from "react-draggable";
 
 import _0_0 from "../images/0 0.png";
@@ -29,7 +30,7 @@ import _4_6 from "../images/4 6.png";
 import _5_5 from "../images/5 5.png";
 import _5_6 from "../images/5 6.png";
 import _6_6 from "../images/6 6.png";
-import blank from "../images/blank domino.png"
+import blank from "../images/blank domino.png";
 
 const mapToPic = {
   1: _0_0,
@@ -62,13 +63,23 @@ const mapToPic = {
   28: _6_6,
 };
 
-const Domino = ({ dominoKey, isFaceUp, className, onStop, isOnBoard, onMouseDown, onMouseOver, idx, isComputer}) => {
-  if ( isComputer) {
+const Domino = ({
+  dominoKey,
+  isFaceUp,
+  className,
+  onStop,
+  isOnBoard,
+  onMouseDown,
+  onMouseOver,
+  idx,
+  isComputer,
+}) => {
+  if (isComputer) {
     return (
       <img
         draggable="false"
-        className={className}
-        src={isFaceUp ?  mapToPic[dominoKey]: blank}
+        className={classNames(className, isFaceUp ? "slide-down" : "")}
+        src={isFaceUp ? mapToPic[dominoKey] : blank}
         alt="domino"
         onMouseOver={onMouseOver}
         dominoKey={dominoKey}
@@ -94,7 +105,6 @@ const Domino = ({ dominoKey, isFaceUp, className, onStop, isOnBoard, onMouseDown
       onStop={onStop}
       defaultPosition={{ x: 0, y: 0 }}
       position={{ x: 0, y: 0 }}
-
     >
       <img
         draggable="false"
@@ -103,7 +113,7 @@ const Domino = ({ dominoKey, isFaceUp, className, onStop, isOnBoard, onMouseDown
         className={className}
         onMouseOver={onMouseOver}
         onMouseDown={onMouseDown}
-              />
+      />
     </Draggable>
   );
 };

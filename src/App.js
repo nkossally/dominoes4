@@ -5,11 +5,7 @@ import "./App.scss";
 import Domino from "./components/Domino";
 import InstructionsModal from "./components/InstructionsModal";
 import GameOverModal from "./components/GameOverModal";
-import {
-  HORIZONTAL_CLASSES,
-  NUM_DOMINOES,
-  MIDDLE_ROW_MAX,
-} from "./consts";
+import { HORIZONTAL_CLASSES, NUM_DOMINOES, MIDDLE_ROW_MAX } from "./consts";
 import {
   getClassNameForRow1,
   getClassNameForRow2,
@@ -17,13 +13,13 @@ import {
   getClassNameForRow4,
   getClassNameForRow5,
 } from "./util";
-import { useSelector, useDispatch } from 'react-redux'
-import { modifyDominoVals, resetVals } from './store/valsSlice'
-import { modifyComputerHand } from './store/computerSlice'
-import { modifyHand } from './store/handSlice'
+import { useSelector, useDispatch } from "react-redux";
+import { modifyDominoVals, resetVals } from "./store/valsSlice";
+import { modifyComputerHand } from "./store/computerSlice";
+import { modifyHand } from "./store/handSlice";
 
 const passButtonStyle = {
-  "margin": "20px 0px",
+  margin: "20px 0px",
   color: "#00e0ff",
   "border-color": "#00e0ff",
   "font-size": 20,
@@ -50,30 +46,30 @@ function App() {
   const [startNewGame, setStartNewGame] = useState(true);
   const [flippedComputerDomino, setFlippedComputerDomino] = useState(null);
   const [isGameOver, setIsGameOver] = useState(false);
-  const dispatch = useDispatch()
-  const keyToVals = useSelector((state) => state.vals.vals)
-  const hand = useSelector((state) => state.hand.hand)
-  const computerHand = useSelector((state) => state.computerHand.computerHand)
+  const dispatch = useDispatch();
+  const keyToVals = useSelector((state) => state.vals.vals);
+  const hand = useSelector((state) => state.hand.hand);
+  const computerHand = useSelector((state) => state.computerHand.computerHand);
 
-  const checkIfGameOver = () =>{
-    if(hand.length === 0 || computerHand.length === 0){
+  const checkIfGameOver = () => {
+    if (hand.length === 0 || computerHand.length === 0) {
       return true;
     } else {
-      const computerMoves = getMoveFromHand(computerHand)
-      const playerMoves = getMoveFromHand(hand)
-      if(!computerMoves && !playerMoves){
+      const computerMoves = getMoveFromHand(computerHand);
+      const playerMoves = getMoveFromHand(hand);
+      if (!computerMoves && !playerMoves) {
         return true;
       }
     }
-    return false
-  }
-  useEffect(() =>{
-    if(!startNewGame){
-      if(checkIfGameOver()){
+    return false;
+  };
+  useEffect(() => {
+    if (!startNewGame) {
+      if (checkIfGameOver()) {
         setIsGameOver(true);
       }
     }
-  },[computerHand, hand])
+  }, [computerHand, hand]);
 
   useEffect(() => {
     if (startNewGame) {
@@ -85,9 +81,9 @@ function App() {
     const hand1 = [];
     const hand2 = [];
     let additionalCount = 0;
-    dispatch(resetVals())
+    dispatch(resetVals());
     setIsComputersTurn(false);
-    setIsGameOver(false)
+    setIsGameOver(false);
     setMiddleBounds(null);
     setKeyToClassNames({ 1: "domino-vertical" });
 
@@ -133,7 +129,7 @@ function App() {
   };
 
   const getMoveFromHand = (dominoHand) => {
-    console.log(keyToVals)
+    console.log(keyToVals);
     let result;
     if (dominoHand.length === 0) return;
     for (let i = 0; i < dominoHand.length; i++) {
@@ -159,7 +155,7 @@ function App() {
   };
 
   const handleComputerStep = () => {
-    if(checkIfGameOver()) return;
+    if (checkIfGameOver()) return;
     let matchingDominos = getMoveFromHand(computerHand);
     if (matchingDominos) setFlippedComputerDomino(matchingDominos[0]);
     setTimeout(() => {
@@ -167,11 +163,11 @@ function App() {
         tryPlayDomino(matchingDominos[0], matchingDominos[1], true);
       }
       setIsComputersTurn(false);
-    }, 500);
+    }, 1000);
   };
 
   const handleStop = (num) => {
-    if(isComputersTurn) return;
+    if (isComputersTurn) return;
     const madePlay = tryPlayDomino(num, hoveredDomino, false);
 
     if (madePlay) setIsComputersTurn(true);
@@ -256,7 +252,7 @@ function App() {
     newKeyToVals[dominoKey] = dominoVals;
 
     newKeyToVals[playedCardKey] = hoveredDominoVals;
-    dispatch(modifyDominoVals(newKeyToVals))
+    dispatch(modifyDominoVals(newKeyToVals));
     return true;
   };
 
@@ -292,13 +288,13 @@ function App() {
     row5 = row4.splice(3);
   }
 
-  let gameOverText = ""
-  if(computerHand.length > hand.length){
-    gameOverText = "Player Wins"
-  } else if(hand.length > computerHand.length){
-    gameOverText = "Computer Wins"
+  let gameOverText = "";
+  if (computerHand.length > hand.length) {
+    gameOverText = "Player Wins";
+  } else if (hand.length > computerHand.length) {
+    gameOverText = "Computer Wins";
   } else {
-    gameOverText = "It's a tie"
+    gameOverText = "It's a tie";
   }
 
   return (
@@ -491,7 +487,12 @@ function App() {
       >
         Pass
       </Button>
-      <Button variant="outlined" disabled={startNewGame} sx={resetButtonStyle} onClick={setUpGame }>
+      <Button
+        variant="outlined"
+        disabled={startNewGame}
+        sx={resetButtonStyle}
+        onClick={setUpGame}
+      >
         New Game
       </Button>
     </div>

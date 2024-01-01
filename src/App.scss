@@ -12,6 +12,24 @@ $seven: 14px;
   color: white;
 }
 
+@keyframes slideDown {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(60px);
+  }
+}
+
+.slide-down {
+  animation-duration: 1s;
+  animation-name: slideDown;
+  // animation-iteration-count: infinite;
+  // animation-direction: alternate;
+}
+
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
