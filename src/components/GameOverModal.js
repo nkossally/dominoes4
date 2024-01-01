@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { Modal, Grow } from "@mui/material";
 
-export default function GameOverModal() {
+export default function GameOverModal({ text }) {
   const [open, setOpen] = React.useState(true);
   const handleClose = () => setOpen(false);
 
@@ -44,7 +44,7 @@ export default function GameOverModal() {
         >
           <Box sx={style}>
             <Typography id="modal-modal-description" sx={textStyle}>
-              Game Over
+              {text}
             </Typography>
           </Box>
         </Grow>

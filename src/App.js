@@ -83,6 +83,7 @@ function App() {
     let additionalCount = 0;
     dispatch(resetVals())
     setIsComputersTurn(false);
+    setIsGameOver(false)
     setMiddleBounds(null);
     setKeyToClassNames({ 1: "domino-vertical" });
     setStartNewGame(false);
@@ -133,7 +134,7 @@ function App() {
     if (dominoHand.length === 0) return;
     for (let i = 0; i < dominoHand.length; i++) {
       if (result) break;
-      const vals = keyToVals[computerHand[i]];
+      const vals = keyToVals[dominoHand[i]];
       if (!vals) break;
       for (let j = 0; j < playedCards.length; j++) {
         const playedCardNums = keyToVals[playedCards[j]];
@@ -286,11 +287,20 @@ function App() {
     row5 = row4.splice(3);
   }
 
+  let gameOverText = ""
+  if(computerHand.length > hand.length){
+    gameOverText = "Player Wins"
+  } else if(hand.length > computerHand.length){
+    gameOverText = "Computer Wins"
+  } else {
+    gameOverText = "It's a tie"
+  }
+
   return (
     <div className="App">
       <InstructionsModal />
-      {isGameOver ? <GameOverModal /> : ""}
-      <div className="hand slight-vertical-margin">
+      {isGameOver ? <GameOverModal text={gameOverText} /> : ""}
+      <div className="hand slight-vertical-margin computerHand">
         {computerHand.map((num) => {
           return (
             <Domino
@@ -299,7 +309,7 @@ function App() {
               className="domino-vertical"
               isOnBoard={false}
               isComputer={true}
-              isFaceUp={num === flippedComputerDomino}
+              isFaceUp={isGameOver || num === flippedComputerDomino}
             />
           );
         })}
