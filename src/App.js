@@ -77,7 +77,7 @@ function App() {
   }, [computerHand, hand]);
 
   useEffect(() => {
-    setUpGame();
+    // setUpGame();
   }, []);
 
   const setUpGame = () => {
@@ -496,13 +496,13 @@ function App() {
             />
           );
         })}
-        <Button
+       <Button
           variant="outlined"
           color="info"
           size="medium"
           sx={passButtonStyle}
           onClick={handleComputerStep}
-          disabled={isGameOver}
+          disabled={isGameOver || hand.length === 0}
         >
           Pass
         </Button>

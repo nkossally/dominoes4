@@ -6,7 +6,7 @@ import Modal from "@mui/material/Modal";
 import infoIcon from "../images/info icon.png"
 
 export default function InstructionsModal() {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
