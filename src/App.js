@@ -46,7 +46,7 @@ function App() {
   });
   const [isComputersTurn, setIsComputersTurn] = useState(false);
   const [middleBounds, setMiddleBounds] = useState(null);
-  const [startNewGame, setStartNewGame] = useState(false);
+  // const [startNewGame, setStartNewGame] = useState(false);
   const [flippedComputerDomino, setFlippedComputerDomino] = useState(null);
   const [isGameOver, setIsGameOver] = useState(false);
   const dispatch = useDispatch();
@@ -54,6 +54,7 @@ function App() {
   const hand = useSelector((state) => state.hand.hand);
   const computerHand = useSelector((state) => state.computerHand.computerHand);
   const [isMounting, setIsMounting] = useState(true);
+  const [disableStartNewGame, setDisableStartNewGame] = useState(false);
 
   const checkIfGameOver = () => {
     if (hand.length === 0 || computerHand.length === 0) {
@@ -76,13 +77,10 @@ function App() {
     }
   }, [computerHand, hand]);
 
-  useEffect(() => {
-    // setUpGame();
-  }, []);
-
   const setUpGame = () => {
-    setStartNewGame(true);
+    // setStartNewGame(true);
     setIsMounting(true);
+    setDisableStartNewGame(true)
 
     const hand1 = [];
     const hand2 = [];
@@ -113,6 +111,7 @@ function App() {
 
     setTimeout(() => {
       setPlayedCards([1]);
+      const computerMovesFirst = hand1.includes(1);
       if (hand1.includes(1)) {
         const newHand1 = Array.from(hand1);
         newHand1.splice(newHand1.indexOf(1), 1);
@@ -123,8 +122,11 @@ function App() {
         dispatch(modifyHand(newHand2));
         setIsComputersTurn(true);
       }
-      setStartNewGame(false);
+      // setStartNewGame(false);
       setIsMounting(false);
+      setTimeout(()=>{
+        setDisableStartNewGame(false)
+      }, computerMovesFirst ? 0 : 1000)
     }, 1000);
   };
 
@@ -178,6 +180,7 @@ function App() {
         tryPlayDomino(matchingDominos[0], matchingDominos[1], true);
       }
       setIsComputersTurn(false);
+      setFlippedComputerDomino(null)
     }, 1000);
   };
 
@@ -492,20 +495,22 @@ function App() {
             />
           );
         })}
-        <Button
-          variant="outlined"
-          color="info"
-          size="medium"
-          sx={passButtonStyle}
-          onClick={handleComputerStep}
-          disabled={isGameOver || hand.length === 0}
-        >
-          Pass
-        </Button>
+        {hand.length > 0 && (
+          <Button
+            variant="outlined"
+            color="info"
+            size="medium"
+            sx={passButtonStyle}
+            onClick={handleComputerStep}
+            disabled={isGameOver || hand.length === 0}
+          >
+            Pass
+          </Button>
+        )}
       </div>
       <Button
         variant="outlined"
-        disabled={startNewGame}
+        disabled={disableStartNewGame}
         sx={resetButtonStyle}
         onClick={setUpGame}
       >
