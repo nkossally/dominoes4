@@ -53,7 +53,7 @@ function App() {
   const keyToVals = useSelector((state) => state.vals.vals);
   const hand = useSelector((state) => state.hand.hand);
   const computerHand = useSelector((state) => state.computerHand.computerHand);
-  const [isMounting, setIsMounting] = useState(true); 
+  const [isMounting, setIsMounting] = useState(true);
 
   const checkIfGameOver = () => {
     if (hand.length === 0 || computerHand.length === 0) {
@@ -69,11 +69,11 @@ function App() {
   };
 
   useEffect(() => {
-    if(!isMounting){
+    if (!isMounting) {
       if (checkIfGameOver()) {
         setIsGameOver(true);
+      }
     }
-  }
   }, [computerHand, hand]);
 
   useEffect(() => {
@@ -82,11 +82,11 @@ function App() {
 
   const setUpGame = () => {
     setStartNewGame(true);
-    setIsMounting(true)
+    setIsMounting(true);
 
     const hand1 = [];
     const hand2 = [];
-    setPlayedCards([])
+    setPlayedCards([]);
 
     dispatch(resetVals());
     setIsComputersTurn(false);
@@ -98,11 +98,10 @@ function App() {
       const random = Math.random();
       const num = Math.ceil(random * NUM_DOMINOES);
       if (!hand1.includes(num)) {
-        
-          hand1.push(num);
-        }
+        hand1.push(num);
       }
-    
+    }
+
     for (let i = 1; i <= NUM_DOMINOES; i++) {
       if (!hand1.includes(i)) {
         hand2.push(i);
@@ -112,24 +111,21 @@ function App() {
     dispatch(modifyComputerHand(hand1));
     dispatch(modifyHand(hand2));
 
-    setTimeout(() =>{
+    setTimeout(() => {
       setPlayedCards([1]);
-      if(hand1.includes(1)){
-        const newHand1 = Array.from(hand1)
-        newHand1.splice(newHand1.indexOf(1), 1)
+      if (hand1.includes(1)) {
+        const newHand1 = Array.from(hand1);
+        newHand1.splice(newHand1.indexOf(1), 1);
         dispatch(modifyComputerHand(newHand1));
-
       } else {
-        const newHand2 = Array.from(hand2)
-        newHand2.splice(newHand2.indexOf(1), 1)
+        const newHand2 = Array.from(hand2);
+        newHand2.splice(newHand2.indexOf(1), 1);
         dispatch(modifyHand(newHand2));
-        setIsComputersTurn(true)
+        setIsComputersTurn(true);
       }
       setStartNewGame(false);
-      setIsMounting(false)
-
-    }, 1000)
-
+      setIsMounting(false);
+    }, 1000);
   };
 
   useEffect(() => {
@@ -496,7 +492,7 @@ function App() {
             />
           );
         })}
-       <Button
+        <Button
           variant="outlined"
           color="info"
           size="medium"

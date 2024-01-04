@@ -11,7 +11,7 @@ export default function GameOverModal({ text }) {
     position: "absolute",
     top: "50%",
     left: "50%",
-    width: 250,
+    width: 300,
     bgcolor: "background.paper",
     bgcolor: "#00e0ff",
     color: "white",
