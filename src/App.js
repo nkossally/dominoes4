@@ -80,7 +80,7 @@ function App() {
   const setUpGame = () => {
     // setStartNewGame(true);
     setIsMounting(true);
-    setDisableStartNewGame(true)
+    setDisableStartNewGame(true);
 
     const hand1 = [];
     const hand2 = [];
@@ -124,9 +124,12 @@ function App() {
       }
       // setStartNewGame(false);
       setIsMounting(false);
-      setTimeout(()=>{
-        setDisableStartNewGame(false)
-      }, computerMovesFirst ? 0 : 1000)
+      setTimeout(
+        () => {
+          setDisableStartNewGame(false);
+        },
+        computerMovesFirst ? 0 : 1000
+      );
     }, 1000);
   };
 
@@ -180,7 +183,7 @@ function App() {
         tryPlayDomino(matchingDominos[0], matchingDominos[1], true);
       }
       setIsComputersTurn(false);
-      setFlippedComputerDomino(null)
+      setFlippedComputerDomino(null);
     }, 1000);
   };
 
@@ -315,9 +318,15 @@ function App() {
     gameOverText = "It's a tie";
   }
 
+  const instructionsModalCloseCallback = () => {
+    if (hand.length === 0 && computerHand.length === 0) {
+      setUpGame();
+    }
+  };
+
   return (
     <div className="App">
-      <InstructionsModal />
+      <InstructionsModal onCloseCallback={instructionsModalCloseCallback} />
       {isGameOver ? <GameOverModal text={gameOverText} /> : ""}
       <div className="hand slight-vertical-margin computerHand">
         {computerHand.map((num) => {

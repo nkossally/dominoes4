@@ -5,10 +5,15 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import infoIcon from "../images/info icon.png";
 
-export default function InstructionsModal() {
+export default function InstructionsModal({ onCloseCallback }) {
   const [open, setOpen] = React.useState(true);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+    if (onCloseCallback) {
+      onCloseCallback();
+    }
+  };
 
   const buttonStyle = {
     position: "absolute",
