@@ -54,8 +54,9 @@ export default function InstructionsModal({ onCloseCallback }) {
                   of the edge dominoes on the board.
                 </Typography>
                 <Typography id="modal-modal-description" sx={{ mt: 1 }}>
-                  Select a domino on the board by hovering over it or pressing arrow keys, and select a
-                  domino from your hand by clicking or dragging.
+                  Select a domino on the board by hovering over it or by
+                  pressing an arrow key, and select a domino from your hand by
+                  clicking or dragging.
                 </Typography>
                 <Typography id="modal-modal-description" sx={{ mt: 1 }}>
                   {" "}
@@ -66,7 +67,7 @@ export default function InstructionsModal({ onCloseCallback }) {
                   Pass if no moves are available.
                 </Typography>
                 <Typography id="modal-modal-description" sx={{ mt: 1 }}>
-                  Play all dominoes or the most dominoes to win.
+                  Play all or the most dominoes to win.
                 </Typography>
               </div>
             </div>

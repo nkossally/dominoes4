@@ -46,7 +46,6 @@ function App() {
   });
   const [isComputersTurn, setIsComputersTurn] = useState(false);
   const [middleBounds, setMiddleBounds] = useState(null);
-  // const [startNewGame, setStartNewGame] = useState(false);
   const [flippedComputerDomino, setFlippedComputerDomino] = useState(null);
   const [isGameOver, setIsGameOver] = useState(false);
   const dispatch = useDispatch();
@@ -78,7 +77,6 @@ function App() {
   }, [computerHand, hand]);
 
   const setUpGame = () => {
-    // setStartNewGame(true);
     setIsMounting(true);
     setDisableStartNewGame(true);
 
@@ -122,7 +120,6 @@ function App() {
         dispatch(modifyHand(newHand2));
         setIsComputersTurn(true);
       }
-      // setStartNewGame(false);
       setIsMounting(false);
       setTimeout(
         () => {
@@ -325,7 +322,8 @@ function App() {
     }
   };
 
-  const arrowPressHandler = (e, a) => {
+  const arrowPressHandler = (e) => {
+    console.log(e.keyCode)
     if (e.keyCode >= 37 && e.keyCode <= 40) {
       if (hoveredDomino === null) {
         setHoveredDomino(playedCards[0]);
@@ -518,7 +516,7 @@ function App() {
               dominoKey={num}
               vals={keyToVals[num]}
               className={classNames("domino-vertical", "player-hand")}
-              onStop={(e) => handleStop(num)}
+              onStop={() => handleStop(num)}
               isOnBoard={false}
               isComputersTurn={isComputersTurn}
             />

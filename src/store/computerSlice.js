@@ -3,7 +3,6 @@ import { createSlice } from '@reduxjs/toolkit'
 export const computerSlice = createSlice({
   name: 'computerHand',
   initialState: {
-
     computerHand: [],
   },
   reducers: {
