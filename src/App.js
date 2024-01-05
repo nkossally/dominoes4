@@ -41,6 +41,8 @@ const resetButtonStyle = {
 function App() {
   const [playedCards, setPlayedCards] = useState([]);
   const [hoveredDomino, setHoveredDomino] = useState(null);
+  const [selectedDominoKey, setSelectedDominoKey] = useState(null);
+
   const [hoveredPlayerDomino, setHoveredPlayerDomino] = useState(null);
   const [keyToClassNames, setKeyToClassNames] = useState({
     1: "domino-vertical",
@@ -60,8 +62,8 @@ function App() {
     if (hand.length === 0 || computerHand.length === 0) {
       return true;
     } else {
-      const computerMoves = getMoveFromHand(computerHand);
-      const playerMoves = getMoveFromHand(hand);
+      const computerMoves = getMoveFromHand(computerHand, true);
+      const playerMoves = getMoveFromHand(hand, true);
       if (!computerMoves && !playerMoves) {
         return true;
       }
@@ -143,8 +145,11 @@ function App() {
     if (
       playedCards[0] === possibleHoveredDominoKey ||
       playedCards[playedCards.length - 1] === possibleHoveredDominoKey
-    )
+    ){
+      setSelectedDominoKey(possibleHoveredDominoKey);
       setHoveredDomino(possibleHoveredDominoKey);
+    }
+
   };
 
   const handleOnMouseOverPlayerCard = (e) => {
@@ -153,7 +158,7 @@ function App() {
     setHoveredPlayerDomino(possibleHoveredDominoKey);
   };
 
-  const getMoveFromHand = (dominoHand) => {
+  const getMoveFromHand = (dominoHand, isRunningCheck) => {
     let result;
     if (dominoHand.length === 0) return;
     for (let i = 0; i < dominoHand.length; i++) {
@@ -167,7 +172,8 @@ function App() {
           if (result) break;
           for (let m = 0; m < playedCardNums.length; m++) {
             if (vals[k] === playedCardNums[m]) {
-              setHoveredDomino(playedCards[j]);
+              if(!isRunningCheck) setSelectedDominoKey(playedCards[j]);
+              if(!isRunningCheck) setHoveredDomino(playedCards[j]);
               result = [dominoHand[i], playedCards[j]];
               break;
             }
@@ -195,7 +201,7 @@ function App() {
     if (isComputersTurn) return;
     let resolvedNum = typeof num === "number" ? num : hoveredPlayerDomino;
     if(typeof resolvedNum !== "number") return;
-    const madePlay = tryPlayDomino(resolvedNum, hoveredDomino, false);
+    const madePlay = tryPlayDomino(resolvedNum, selectedDominoKey, false);
     if (madePlay) setIsComputersTurn(true);
   };
 
@@ -281,6 +287,8 @@ function App() {
 
     newKeyToVals[playedCardKey] = hoveredDominoVals;
     dispatch(modifyDominoVals(newKeyToVals));
+    setHoveredDomino(dominoKey)
+    setSelectedDominoKey(dominoKey)
     return true;
   };
 
@@ -333,12 +341,15 @@ function App() {
 
   const arrowPressHandler = (e) => {
     if (e.keyCode >= 37 && e.keyCode <= 40) {
-      if (hoveredDomino === null) {
+      if (selectedDominoKey === null) {
         setHoveredDomino(playedCards[0]);
-      } else if (hoveredDomino === playedCards[0]) {
+        setSelectedDominoKey(playedCards[0]);
+      } else if (selectedDominoKey === playedCards[0]) {
         setHoveredDomino(playedCards[playedCards.length - 1]);
+        setSelectedDominoKey(playedCards[playedCards.length - 1]);
       } else {
         setHoveredDomino(playedCards[0]);
+        setSelectedDominoKey(playedCards[0]);
       }
     } else if(e.keyCode === 13) {
       handlePlayerMove()
@@ -350,7 +361,7 @@ function App() {
     return () => {
       document.removeEventListener("keydown", arrowPressHandler);
     };
-  }, [hoveredDomino, playedCards, hoveredPlayerDomino]);
+  }, [hoveredDomino, playedCards, hoveredPlayerDomino, selectedDominoKey]);
 
   return (
     <div className="App">
