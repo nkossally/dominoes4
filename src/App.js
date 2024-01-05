@@ -327,7 +327,6 @@ function App() {
 
   const arrowPressHandler = (e, a) => {
     if (e.keyCode >= 37 && e.keyCode <= 40) {
-      console.log(e.keyCode)
       if (hoveredDomino === null) {
         setHoveredDomino(playedCards[0]);
       } else if (hoveredDomino === playedCards[0]) {
