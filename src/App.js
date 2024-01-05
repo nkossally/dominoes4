@@ -196,6 +196,7 @@ function App() {
 
   const tryPlayDomino = (dominoKey, playedCardKey, isComputer) => {
     const dominoVals = Array.from(keyToVals[dominoKey]);
+    if(!keyToVals[playedCardKey]) return;
     const hoveredDominoVals = Array.from(keyToVals[playedCardKey]);
     if (playedCardKey === null) return;
     let matchVal;
@@ -326,6 +327,7 @@ function App() {
 
   const arrowPressHandler = (e, a) => {
     if (e.keyCode >= 37 && e.keyCode <= 40) {
+      console.log(e.keyCode)
       if (hoveredDomino === null) {
         setHoveredDomino(playedCards[0]);
       } else if (hoveredDomino === playedCards[0]) {
@@ -341,7 +343,7 @@ function App() {
     return () => {
       document.removeEventListener("keydown", arrowPressHandler);
     };
-  }, [hoveredDomino]);
+  }, [hoveredDomino, playedCards]);
 
   return (
     <div className="App">
