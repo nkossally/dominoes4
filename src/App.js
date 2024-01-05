@@ -324,6 +324,25 @@ function App() {
     }
   };
 
+  const arrowPressHandler = (e, a) => {
+    if (e.keyCode >= 37 && e.keyCode <= 40) {
+      if (hoveredDomino === null) {
+        setHoveredDomino(playedCards[0]);
+      } else if (hoveredDomino === playedCards[0]) {
+        setHoveredDomino(playedCards[playedCards.length - 1]);
+      } else {
+        setHoveredDomino(playedCards[0]);
+      }
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("keydown", arrowPressHandler);
+    return () => {
+      document.removeEventListener("keydown", arrowPressHandler);
+    };
+  }, [hoveredDomino]);
+
   return (
     <div className="App">
       <InstructionsModal onCloseCallback={instructionsModalCloseCallback} />

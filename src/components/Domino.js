@@ -79,7 +79,7 @@ const Domino = ({
     return (
       <img
         draggable="false"
-        className={classNames(className,dominoKey === 1 ? "slide-down" : "", isMovingToBoard ? "slide-down" : "")}
+        className={classNames(className, "look-3d", dominoKey === 1 ? "slide-down" : "", isMovingToBoard ? "slide-down" : "")}
         src={isFaceUp || dominoKey === 1 ? mapToPic[dominoKey] : blank}
         alt="domino"
         onMouseOver={onMouseOver}
@@ -92,7 +92,7 @@ const Domino = ({
     return (
       <img
         draggable="false"
-        className={className}
+        className={classNames( className, "look-3d")}
         src={mapToPic[dominoKey]}
         alt="domino"
         onMouseOver={onMouseOver}
@@ -111,7 +111,7 @@ const Domino = ({
         draggable="false"
         src={mapToPic[dominoKey]}
         alt="domino"
-        className={classNames(className, dominoKey === 1 ? "slide-up" : "")}
+        className={classNames(className, "look-3d",dominoKey === 1 ? "slide-up" : "")}
         onMouseOver={onMouseOver}
         onMouseDown={onMouseDown}
       />
