@@ -114,6 +114,7 @@ const Domino = ({
         className={classNames(className, "look-3d",dominoKey === 1 ? "slide-up" : "")}
         onMouseOver={onMouseOver}
         onMouseDown={onMouseDown}
+        dominoKey={dominoKey}
       />
     </Draggable>
   );

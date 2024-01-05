@@ -41,6 +41,7 @@ const resetButtonStyle = {
 function App() {
   const [playedCards, setPlayedCards] = useState([]);
   const [hoveredDomino, setHoveredDomino] = useState(null);
+  const [hoveredPlayerDomino, setHoveredPlayerDomino] = useState(null);
   const [keyToClassNames, setKeyToClassNames] = useState({
     1: "domino-vertical",
   });
@@ -138,12 +139,18 @@ function App() {
 
   const handleOnMouseOver = (e) => {
     if (!e.target) return;
-    const hoveredDominoKey = parseInt(e.target.getAttribute("dominoKey"));
+    const possibleHoveredDominoKey = parseInt(e.target.getAttribute("dominoKey"));
     if (
-      playedCards[0] === hoveredDominoKey ||
-      playedCards[playedCards.length - 1] === hoveredDominoKey
+      playedCards[0] === possibleHoveredDominoKey ||
+      playedCards[playedCards.length - 1] === possibleHoveredDominoKey
     )
-      setHoveredDomino(hoveredDominoKey);
+      setHoveredDomino(possibleHoveredDominoKey);
+  };
+
+  const handleOnMouseOverPlayerCard = (e) => {
+    if (!e.target) return;
+    const possibleHoveredDominoKey = parseInt(e.target.getAttribute("dominoKey"));
+    setHoveredPlayerDomino(possibleHoveredDominoKey);
   };
 
   const getMoveFromHand = (dominoHand) => {
@@ -184,14 +191,16 @@ function App() {
     }, 1000);
   };
 
-  const handleStop = (num) => {
+  const handlePlayerMove = (num) => {
     if (isComputersTurn) return;
-    const madePlay = tryPlayDomino(num, hoveredDomino, false);
-
+    let resolvedNum = typeof num === "number" ? num : hoveredPlayerDomino;
+    if(typeof resolvedNum !== "number") return;
+    const madePlay = tryPlayDomino(resolvedNum, hoveredDomino, false);
     if (madePlay) setIsComputersTurn(true);
   };
 
   const tryPlayDomino = (dominoKey, playedCardKey, isComputer) => {
+    if(!keyToVals[dominoKey]) return;
     const dominoVals = Array.from(keyToVals[dominoKey]);
     if(!keyToVals[playedCardKey]) return;
     const hoveredDominoVals = Array.from(keyToVals[playedCardKey]);
@@ -323,7 +332,7 @@ function App() {
   };
 
   const arrowPressHandler = (e) => {
-    console.log(e.keyCode)
+    e.preventDefault();
     if (e.keyCode >= 37 && e.keyCode <= 40) {
       if (hoveredDomino === null) {
         setHoveredDomino(playedCards[0]);
@@ -332,6 +341,8 @@ function App() {
       } else {
         setHoveredDomino(playedCards[0]);
       }
+    } else if(e.keyCode === 13) {
+      handlePlayerMove()
     }
   };
 
@@ -340,7 +351,7 @@ function App() {
     return () => {
       document.removeEventListener("keydown", arrowPressHandler);
     };
-  }, [hoveredDomino, playedCards]);
+  }, [hoveredDomino, playedCards, hoveredPlayerDomino]);
 
   return (
     <div className="App">
@@ -516,7 +527,8 @@ function App() {
               dominoKey={num}
               vals={keyToVals[num]}
               className={classNames("domino-vertical", "player-hand")}
-              onStop={() => handleStop(num)}
+              onStop={() => handlePlayerMove(num)}
+              onMouseOver={handleOnMouseOverPlayerCard}
               isOnBoard={false}
               isComputersTurn={isComputersTurn}
             />
