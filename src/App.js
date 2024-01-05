@@ -126,6 +126,8 @@ function App() {
       setIsMounting(false);
       setTimeout(
         () => {
+          setHoveredDomino(1);
+          setSelectedDominoKey(1);
           setDisableStartNewGame(false);
         },
         computerMovesFirst ? 0 : 1000
