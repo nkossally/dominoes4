@@ -277,6 +277,7 @@ function App() {
       }
       setKeyToClassNames({ [dominoKey]: className, ...keyToClassNames });
       setPlayedCards(playedCards.concat(dominoKey));
+      setHoveredPlayerDomino(null);
     }
 
     hoveredDominoVals.splice(hoverValsIdx, 1);
@@ -326,7 +327,7 @@ function App() {
 
   let gameOverText = "";
   if (computerHand.length > hand.length) {
-    gameOverText = "Player Wins";
+    gameOverText = "You Win";
   } else if (hand.length > computerHand.length) {
     gameOverText = "Computer Wins";
   } else {
