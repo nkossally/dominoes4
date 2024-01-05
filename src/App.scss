@@ -200,7 +200,7 @@ body {
   --delay: .5s;
   --timing: .7s;
 
-  --delay: .5s;
+  --delay: -.1s;
   --timing: .7s;
 }
 
@@ -214,8 +214,8 @@ body {
 .box-outer {
   display: flex;
   overflow: hidden;
-  width: 20rem;
-  height: 20rem;
+  // width: 20rem;
+  // height: 20rem;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -223,10 +223,8 @@ body {
 }
 
 .main_box {
-  width: 900px;
-
   width: 20rem;
-  height: 20rem;
+  // height: 20rem;
   position: relative;
   background-color: white;
   border: 0.5rem solid #00e0ff;

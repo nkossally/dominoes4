@@ -28,7 +28,6 @@ export default function InstructionsModal({ onCloseCallback }) {
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: 400,
     bgcolor: "background.paper",
   };
 
@@ -55,7 +54,7 @@ export default function InstructionsModal({ onCloseCallback }) {
                   of the edge dominoes on the board.
                 </Typography>
                 <Typography id="modal-modal-description" sx={{ mt: 1 }}>
-                  Select a domino on the board by hovering over it, and select a
+                  Select a domino on the board by hovering over it or pressing arrow keys, and select a
                   domino from your hand by clicking or dragging.
                 </Typography>
                 <Typography id="modal-modal-description" sx={{ mt: 1 }}>
