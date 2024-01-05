@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/dominoes4/static/css/main.50c9cc7a.css",
-    "main.js": "/dominoes4/static/js/main.e521b0d8.js",
+    "main.css": "/dominoes4/static/css/main.e3f594c5.css",
+    "main.js": "/dominoes4/static/js/main.34fe0019.js",
     "static/media/0 0.png": "/dominoes4/static/media/0 0.1bbf5a282e237fd9b236.png",
     "static/media/5 6.png": "/dominoes4/static/media/5 6.641c860e2c374943d778.png",
     "static/media/info icon.png": "/dominoes4/static/media/info icon.82c90b46274d7dc674f1.png",
@@ -33,11 +33,11 @@
     "static/media/blank domino.png": "/dominoes4/static/media/blank domino.2e78b048f79b490a685f.png",
     "static/media/0 1.png": "/dominoes4/static/media/0 1.1d88bf2245580f8a12e5.png",
     "index.html": "/dominoes4/index.html",
-    "main.50c9cc7a.css.map": "/dominoes4/static/css/main.50c9cc7a.css.map",
-    "main.e521b0d8.js.map": "/dominoes4/static/js/main.e521b0d8.js.map"
+    "main.e3f594c5.css.map": "/dominoes4/static/css/main.e3f594c5.css.map",
+    "main.34fe0019.js.map": "/dominoes4/static/js/main.34fe0019.js.map"
   },
   "entrypoints": [
-    "static/css/main.50c9cc7a.css",
-    "static/js/main.e521b0d8.js"
+    "static/css/main.e3f594c5.css",
+    "static/js/main.34fe0019.js"
   ]
 }
