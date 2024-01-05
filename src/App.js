@@ -332,7 +332,6 @@ function App() {
   };
 
   const arrowPressHandler = (e) => {
-    e.preventDefault();
     if (e.keyCode >= 37 && e.keyCode <= 40) {
       if (hoveredDomino === null) {
         setHoveredDomino(playedCards[0]);
