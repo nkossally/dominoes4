@@ -119,6 +119,7 @@ body {
   align-items: center;
   justify-content: center;
   height: 500px;
+  margin-top: 20px;
 }
 
 .played-cards {
@@ -327,4 +328,20 @@ body {
 .modal-text-box {
   margin: 10px;
   text-align: center;
+}
+
+
+@keyframes fadeInAndOut {
+  0% { opacity: 0; }
+  50% {opacity: 1}
+  100% { opacity: 0; }
+}
+
+.fade-in-and-out { animation: fadeInAndOut 1s; }
+
+.computer-passes {
+  height: 0px;
+  font-size: 20px;
+  color: #00e0ff;
+  margin-bottom: 20px;
 }

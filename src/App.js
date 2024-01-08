@@ -57,6 +57,7 @@ function App() {
   const computerHand = useSelector((state) => state.computerHand.computerHand);
   const [isMounting, setIsMounting] = useState(true);
   const [disableStartNewGame, setDisableStartNewGame] = useState(false);
+  const [computerPasses, setComputerPasses] = useState(false);
 
   const checkIfGameOver = () => {
     if (hand.length === 0 || computerHand.length === 0) {
@@ -143,20 +144,23 @@ function App() {
 
   const handleOnMouseOver = (e) => {
     if (!e.target) return;
-    const possibleHoveredDominoKey = parseInt(e.target.getAttribute("dominoKey"));
+    const possibleHoveredDominoKey = parseInt(
+      e.target.getAttribute("dominoKey")
+    );
     if (
       playedCards[0] === possibleHoveredDominoKey ||
       playedCards[playedCards.length - 1] === possibleHoveredDominoKey
-    ){
+    ) {
       setSelectedDominoKey(possibleHoveredDominoKey);
       setHoveredDomino(possibleHoveredDominoKey);
     }
-
   };
 
   const handleOnMouseOverPlayerCard = (e) => {
     if (!e.target) return;
-    const possibleHoveredDominoKey = parseInt(e.target.getAttribute("dominoKey"));
+    const possibleHoveredDominoKey = parseInt(
+      e.target.getAttribute("dominoKey")
+    );
     setHoveredPlayerDomino(possibleHoveredDominoKey);
   };
 
@@ -174,8 +178,8 @@ function App() {
           if (result) break;
           for (let m = 0; m < playedCardNums.length; m++) {
             if (vals[k] === playedCardNums[m]) {
-              if(!isRunningCheck) setSelectedDominoKey(playedCards[j]);
-              if(!isRunningCheck) setHoveredDomino(playedCards[j]);
+              if (!isRunningCheck) setSelectedDominoKey(playedCards[j]);
+              if (!isRunningCheck) setHoveredDomino(playedCards[j]);
               result = [dominoHand[i], playedCards[j]];
               break;
             }
@@ -188,29 +192,37 @@ function App() {
 
   const handleComputerStep = () => {
     if (checkIfGameOver()) return;
-    let matchingDominos = getMoveFromHand(computerHand);
-    if (matchingDominos) setFlippedComputerDomino(matchingDominos[0]);
     setTimeout(() => {
-      if (matchingDominos) {
-        tryPlayDomino(matchingDominos[0], matchingDominos[1], true);
+      let matchingDominos = getMoveFromHand(computerHand);
+      if (!matchingDominos) {
+        setComputerPasses(true);
+        setTimeout(() => {
+          setComputerPasses(false);
+        }, 1000);
       }
-      setIsComputersTurn(false);
-      setFlippedComputerDomino(null);
-    }, 1000);
+      if (matchingDominos) setFlippedComputerDomino(matchingDominos[0]);
+      setTimeout(() => {
+        if (matchingDominos) {
+          tryPlayDomino(matchingDominos[0], matchingDominos[1], true);
+        }
+        setIsComputersTurn(false);
+        setFlippedComputerDomino(null);
+      }, 1000);
+    }, 300);
   };
 
   const handlePlayerMove = (num) => {
     if (isComputersTurn) return;
     let resolvedNum = typeof num === "number" ? num : hoveredPlayerDomino;
-    if(typeof resolvedNum !== "number") return;
+    if (typeof resolvedNum !== "number") return;
     const madePlay = tryPlayDomino(resolvedNum, selectedDominoKey, false);
     if (madePlay) setIsComputersTurn(true);
   };
 
   const tryPlayDomino = (dominoKey, playedCardKey, isComputer) => {
-    if(!keyToVals[dominoKey]) return;
+    if (!keyToVals[dominoKey]) return;
     const dominoVals = Array.from(keyToVals[dominoKey]);
-    if(!keyToVals[playedCardKey]) return;
+    if (!keyToVals[playedCardKey]) return;
     const hoveredDominoVals = Array.from(keyToVals[playedCardKey]);
     if (playedCardKey === null) return;
     let matchVal;
@@ -290,8 +302,8 @@ function App() {
 
     newKeyToVals[playedCardKey] = hoveredDominoVals;
     dispatch(modifyDominoVals(newKeyToVals));
-    setHoveredDomino(dominoKey)
-    setSelectedDominoKey(dominoKey)
+    setHoveredDomino(dominoKey);
+    setSelectedDominoKey(dominoKey);
     return true;
   };
 
@@ -354,8 +366,8 @@ function App() {
         setHoveredDomino(playedCards[0]);
         setSelectedDominoKey(playedCards[0]);
       }
-    } else if(e.keyCode === 13) {
-      handlePlayerMove()
+    } else if (e.keyCode === 13) {
+      handlePlayerMove();
     }
   };
 
@@ -384,6 +396,14 @@ function App() {
             />
           );
         })}
+      </div>
+      <div
+        className={classNames(
+          "computer-passes",
+          computerPasses ? "fade-in-and-out" : ""
+        )}
+      >
+        {computerPasses && <>Computer passes</>}
       </div>
       <div className="board">
         <div className="played-cards">
