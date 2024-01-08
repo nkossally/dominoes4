@@ -382,7 +382,7 @@ function App() {
     <div className="App">
       <InstructionsModal onCloseCallback={instructionsModalCloseCallback} />
       {isGameOver ? <GameOverModal text={gameOverText} /> : ""}
-      <div className="hand slight-vertical-margin computerHand">
+      <div className="hand computerHand">
         {computerHand.map((num) => {
           return (
             <Domino
