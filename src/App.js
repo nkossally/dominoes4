@@ -32,7 +32,7 @@ const resetButtonStyle = {
   position: "absolute",
   top: 5,
   left: 5,
-  "text-transform": "capitalize",
+  "text-transform": "uppercase",
   color: "#00e0ff",
   "font-size": 20,
   "border-color": "#00e0ff",
