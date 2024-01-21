@@ -145,7 +145,7 @@ function App() {
   const handleOnMouseOver = (e) => {
     if (!e.target) return;
     const possibleHoveredDominoKey = parseInt(
-      e.target.getAttribute("dominoKey")
+      e.target.getAttribute("dominokey")
     );
     if (
       playedCards[0] === possibleHoveredDominoKey ||
@@ -159,7 +159,7 @@ function App() {
   const handleOnMouseOverPlayerCard = (e) => {
     if (!e.target) return;
     const possibleHoveredDominoKey = parseInt(
-      e.target.getAttribute("dominoKey")
+      e.target.getAttribute("dominokey")
     );
     setHoveredPlayerDomino(possibleHoveredDominoKey);
   };
@@ -219,9 +219,9 @@ function App() {
     if (madePlay) setIsComputersTurn(true);
   };
 
-  const tryPlayDomino = (dominoKey, playedCardKey, isComputer) => {
-    if (!keyToVals[dominoKey]) return;
-    const dominoVals = Array.from(keyToVals[dominoKey]);
+  const tryPlayDomino = (dominokey, playedCardKey, isComputer) => {
+    if (!keyToVals[dominokey]) return;
+    const dominoVals = Array.from(keyToVals[dominokey]);
     if (!keyToVals[playedCardKey]) return;
     const hoveredDominoVals = Array.from(keyToVals[playedCardKey]);
     if (playedCardKey === null) return;
@@ -240,7 +240,7 @@ function App() {
     if (matchVal === undefined) return false;
 
     const newHand = isComputer ? Array.from(computerHand) : Array.from(hand);
-    const idx = newHand.indexOf(dominoKey);
+    const idx = newHand.indexOf(dominokey);
     newHand.splice(idx, 1);
     if (isComputer) {
       dispatch(modifyComputerHand(newHand));
@@ -273,8 +273,8 @@ function App() {
       } else {
         className = getClassNameForRow3(matchVal, otherVal, false);
       }
-      setKeyToClassNames({ [dominoKey]: className, ...keyToClassNames });
-      setPlayedCards([dominoKey, ...playedCards]);
+      setKeyToClassNames({ [dominokey]: className, ...keyToClassNames });
+      setPlayedCards([dominokey, ...playedCards]);
     } else {
       let className;
       if (playedCards.length >= MIDDLE_ROW_MAX) {
@@ -289,8 +289,8 @@ function App() {
       } else {
         className = getClassNameForRow3(matchVal, otherVal, true);
       }
-      setKeyToClassNames({ [dominoKey]: className, ...keyToClassNames });
-      setPlayedCards(playedCards.concat(dominoKey));
+      setKeyToClassNames({ [dominokey]: className, ...keyToClassNames });
+      setPlayedCards(playedCards.concat(dominokey));
       setHoveredPlayerDomino(null);
     }
 
@@ -298,12 +298,12 @@ function App() {
     dominoVals.splice(dominoValsIdx, 1);
 
     const newKeyToVals = { ...keyToVals };
-    newKeyToVals[dominoKey] = dominoVals;
+    newKeyToVals[dominokey] = dominoVals;
 
     newKeyToVals[playedCardKey] = hoveredDominoVals;
     dispatch(modifyDominoVals(newKeyToVals));
-    setHoveredDomino(dominoKey);
-    setSelectedDominoKey(dominoKey);
+    setHoveredDomino(dominokey);
+    setSelectedDominoKey(dominokey);
     return true;
   };
 
@@ -383,16 +383,17 @@ function App() {
       <InstructionsModal onCloseCallback={instructionsModalCloseCallback} />
       {isGameOver ? <GameOverModal text={gameOverText} /> : ""}
       <div className="hand computerHand">
-        {computerHand.map((num) => {
+        {computerHand.map((num, idx) => {
           return (
             <Domino
-              dominoKey={num}
+              dominokey={num}
               vals={keyToVals[num]}
               className="domino-vertical"
               isOnBoard={false}
               isComputer={true}
               isFaceUp={isGameOver || num === flippedComputerDomino}
               isMovingToBoard={num === flippedComputerDomino}
+              key={`${num}.${idx}`}
             />
           );
         })}
@@ -422,12 +423,13 @@ function App() {
                 : "";
               return (
                 <Domino
-                  dominoKey={num}
+                  dominokey={num}
                   className={classNames(className, hoverClass, marginClass)}
                   vals={keyToVals[num]}
                   isOnBoard={true}
                   onMouseOver={handleOnMouseOver}
                   idx={idx}
+                  key={`${num}.${idx}`}
                 />
               );
             })}
@@ -450,12 +452,13 @@ function App() {
                   : "";
               return (
                 <Domino
-                  dominoKey={num}
+                  dominokey={num}
                   className={classNames(className, hoverClass, lower)}
                   vals={keyToVals[num]}
                   isOnBoard={true}
                   onMouseOver={handleOnMouseOver}
                   idx={idx}
+                  key={`${num}.${idx}`}
                 />
               );
             })}
@@ -470,12 +473,13 @@ function App() {
                 : "";
               return (
                 <Domino
-                  dominoKey={num}
+                  dominokey={num}
                   className={classNames(className, hoverClass, marginClass)}
                   vals={keyToVals[num]}
                   isOnBoard={true}
                   onMouseOver={handleOnMouseOver}
                   idx={idx}
+                  key={`${num}.${idx}`}
                 />
               );
             })}
@@ -501,7 +505,7 @@ function App() {
 
                 return (
                   <Domino
-                    dominoKey={num}
+                    dominokey={num}
                     className={classNames(
                       className,
                       horizontalOnVerticalBranch,
@@ -512,6 +516,7 @@ function App() {
                     isOnBoard={true}
                     onMouseOver={handleOnMouseOver}
                     idx={idx}
+                    key={`${num}.${idx}`}
                   />
                 );
               })}
@@ -535,7 +540,7 @@ function App() {
 
                 return (
                   <Domino
-                    dominoKey={num}
+                    dominokey={num}
                     className={classNames(
                       className,
                       higher,
@@ -546,6 +551,7 @@ function App() {
                     isOnBoard={true}
                     onMouseOver={handleOnMouseOver}
                     idx={idx}
+                    key={`${num}.${idx}`}
                   />
                 );
               })}
@@ -554,16 +560,17 @@ function App() {
         </div>
       </div>
       <div className={classNames("hand", "slight-vertical-margin")}>
-        {hand.map((num) => {
+        {hand.map((num, idx) => {
           return (
             <Domino
-              dominoKey={num}
+              dominokey={num}
               vals={keyToVals[num]}
               className={classNames("domino-vertical", "player-hand")}
               onStop={() => handlePlayerMove(num)}
               onMouseOver={handleOnMouseOverPlayerCard}
               isOnBoard={false}
               isComputersTurn={isComputersTurn}
+              key={`${num}.${idx}`}
             />
           );
         })}
