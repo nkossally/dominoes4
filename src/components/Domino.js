@@ -103,16 +103,16 @@ const Domino = ({
   }
   return (
     <Draggable
-      onStop={onStop}
-      defaultPosition={{ x: 0, y: 0 }}
-      position={{ x: 0, y: 0 }}
+    onStop={onStop}
+      // defaultPosition={{ x: 0, y: 0 }}
+      // position={{ x: 0, y: 0 }}
     >
       <img
         draggable="false"
         src={mapToPic[dominokey]}
         alt="domino"
         className={classNames(className, "look-3d",dominokey === 1 ? "slide-up" : "")}
-        onMouseOver={onMouseOver}
+        // onMouseOver={onMouseOver}
         onMouseDown={onMouseDown}
         dominokey={dominokey}
       />

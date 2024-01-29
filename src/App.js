@@ -1,5 +1,6 @@
 import classNames from "classnames";
 import { useState, useEffect } from "react";
+import $ from "jquery";
 import { Button } from "@mui/material";
 import "./App.scss";
 import Domino from "./components/Domino";
@@ -58,6 +59,7 @@ function App() {
   const [isMounting, setIsMounting] = useState(true);
   const [disableStartNewGame, setDisableStartNewGame] = useState(false);
   const [computerPasses, setComputerPasses] = useState(false);
+  const [count, setCount] = useState(0);
 
   const checkIfGameOver = () => {
     if (hand.length === 0 || computerHand.length === 0) {
@@ -210,6 +212,54 @@ function App() {
       }, 1000);
     }, 300);
   };
+
+  var getHitElements = function (e) {
+    var x = e.pageX;
+    var y = e.pageY;
+    var hitElements = [];
+
+    $(":visible").each(function () {
+      var offset = $(this).offset();
+      //     console.log(offset)
+
+      if (
+        offset.left < x &&
+        offset.left + 50 > x &&
+        offset.top < y &&
+        offset.top + 50 > y
+      ) {
+        hitElements.push($(this));
+      }
+    });
+
+    return hitElements;
+  };
+
+  const onStop = (e, i) => {
+    const elems = getHitElements(e);
+    console.log(elems)
+    let row;
+    let col;
+    for (let i = 0; i < elems.length; i++) {
+      const maybeRow = parseInt(elems[i][0].getAttribute("data-row"));
+      const maybeCol = parseInt(elems[i][0].getAttribute("data-col"));
+      if (typeof maybeCol === "number" && typeof maybeRow === "number") {
+        row = maybeRow;
+        col = maybeCol;
+        // setCount(count + 1)
+        // setHand(hand.slice(0, i).concat(hand.slice(i + 1)));
+        break;
+      }
+    }
+    if (!(typeof col === "number" && typeof row === "number")) {
+      // setCount(count + 1)
+    }
+    setCount(count + 1)
+    // setHand(hand.slice(0, i).concat(hand.slice(i + 1)))
+    
+    console.log(row, col);
+  };
+
 
   const handlePlayerMove = (num) => {
     if (isComputersTurn) return;
@@ -566,11 +616,11 @@ function App() {
               dominokey={num}
               vals={keyToVals[num]}
               className={classNames("domino-vertical", "player-hand")}
-              onStop={() => handlePlayerMove(num)}
-              onMouseOver={handleOnMouseOverPlayerCard}
+              onStop={(e) => onStop(e, idx)}
+              // onMouseOver={handleOnMouseOverPlayerCard}
               isOnBoard={false}
               isComputersTurn={isComputersTurn}
-              key={`${num}.${idx}`}
+              key={`${num}.${idx}.${count}`}
             />
           );
         })}
