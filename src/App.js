@@ -145,7 +145,6 @@ function App() {
   }, [isComputersTurn]);
 
   const handleOnMouseOver = (e) => {
-    console.log("handleOnMouseOver");
     if (!e.target) return;
     const possibleHoveredDominoKey = parseInt(
       e.target.getAttribute("dominokey")
@@ -160,9 +159,6 @@ function App() {
   };
 
   const handleOnMouseOverPlayerCard = (e) => {
-    console.log("handleOnMouseOverPlayerCard");
-    console.log(e.target);
-
     if (!e.target) return;
     const possibleHoveredDominoKey = parseInt(
       e.target.getAttribute("dominokey")
@@ -224,7 +220,6 @@ function App() {
 
     $(":visible").each(function () {
       var offset = $(this).offset();
-      //     console.log(offset)
 
       if (
         offset.left < x &&
