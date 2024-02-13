@@ -69,8 +69,7 @@ export default function InstructionsModal({ onCloseCallback }) {
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
             Select a domino on the board by hovering over it or by pressing an
-            arrow key, and select a domino from your hand by clicking or
-            dragging.
+            arrow key, and select a domino from your hand by clicking.
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
             {" "}
