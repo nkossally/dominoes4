@@ -145,6 +145,7 @@ function App() {
   }, [isComputersTurn]);
 
   const handleOnMouseOver = (e) => {
+    console.log("handleOnMouseOver")
     if (!e.target) return;
     const possibleHoveredDominoKey = parseInt(
       e.target.getAttribute("dominokey")
@@ -159,6 +160,9 @@ function App() {
   };
 
   const handleOnMouseOverPlayerCard = (e) => {
+    console.log("handleOnMouseOverPlayerCard")
+    console.log(e.target)
+
     if (!e.target) return;
     const possibleHoveredDominoKey = parseInt(
       e.target.getAttribute("dominokey")
@@ -237,7 +241,7 @@ function App() {
 
   const onStop = (e, i) => {
     const elems = getHitElements(e);
-    console.log(elems)
+    console.log("elems", elems)
     let row;
     let col;
     for (let i = 0; i < elems.length; i++) {
@@ -263,6 +267,7 @@ function App() {
 
   const handlePlayerMove = (num) => {
     if (isComputersTurn) return;
+    console.log("handlePlayerMove", num)
     let resolvedNum = typeof num === "number" ? num : hoveredPlayerDomino;
     if (typeof resolvedNum !== "number") return;
     const madePlay = tryPlayDomino(resolvedNum, selectedDominoKey, false);
@@ -421,12 +426,12 @@ function App() {
     }
   };
 
-  useEffect(() => {
-    document.addEventListener("keydown", arrowPressHandler);
-    return () => {
-      document.removeEventListener("keydown", arrowPressHandler);
-    };
-  }, [hoveredDomino, playedCards, hoveredPlayerDomino, selectedDominoKey]);
+  // useEffect(() => {
+  //   document.addEventListener("keydown", arrowPressHandler);
+  //   return () => {
+  //     document.removeEventListener("keydown", arrowPressHandler);
+  //   };
+  // }, [hoveredDomino, playedCards, hoveredPlayerDomino, selectedDominoKey]);
 
   return (
     <div className="App">
@@ -616,8 +621,11 @@ function App() {
               dominokey={num}
               vals={keyToVals[num]}
               className={classNames("domino-vertical", "player-hand")}
-              onStop={(e) => onStop(e, idx)}
-              // onMouseOver={handleOnMouseOverPlayerCard}
+              // onStop={(e) => onStop(e, idx)}
+              onMouseOver={handleOnMouseOverPlayerCard}
+              onMouseDown={()=>{
+                handlePlayerMove(num)
+              }}
               isOnBoard={false}
               isComputersTurn={isComputersTurn}
               key={`${num}.${idx}.${count}`}
