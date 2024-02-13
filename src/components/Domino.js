@@ -79,7 +79,12 @@ const Domino = ({
     return (
       <img
         draggable="false"
-        className={classNames(className, "look-3d", dominokey === 1 ? "slide-down" : "", isMovingToBoard ? "slide-down" : "")}
+        className={classNames(
+          className,
+          "look-3d",
+          dominokey === 1 ? "slide-down" : "",
+          isMovingToBoard ? "slide-down" : ""
+        )}
         src={isFaceUp || dominokey === 1 ? mapToPic[dominokey] : blank}
         alt="domino"
         onMouseOver={onMouseOver}
@@ -92,7 +97,7 @@ const Domino = ({
     return (
       <img
         draggable="false"
-        className={classNames( className, "look-3d")}
+        className={classNames(className, "look-3d")}
         src={mapToPic[dominokey]}
         alt="domino"
         onMouseOver={onMouseOver}
@@ -103,20 +108,22 @@ const Domino = ({
   }
   return (
     <Draggable
-    // onStop={onStop}
+      // onStop={onStop}
       defaultPosition={{ x: 0, y: 0 }}
       position={{ x: 0, y: 0 }}
-           onMouseDown={onMouseDown}
-          dominokey={dominokey}
-
+      onMouseDown={onMouseDown}
+      dominokey={dominokey}
     >
       <img
         draggable="false"
         src={mapToPic[dominokey]}
         alt="domino"
-        className={classNames(className, "look-3d",dominokey === 1 ? "slide-up" : "")}
+        className={classNames(
+          className,
+          "look-3d",
+          dominokey === 1 ? "slide-up" : ""
+        )}
         onMouseOver={onMouseOver}
-        // onMouseDown={onMouseDown}
         dominokey={dominokey}
       />
     </Draggable>

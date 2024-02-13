@@ -145,7 +145,7 @@ function App() {
   }, [isComputersTurn]);
 
   const handleOnMouseOver = (e) => {
-    console.log("handleOnMouseOver")
+    console.log("handleOnMouseOver");
     if (!e.target) return;
     const possibleHoveredDominoKey = parseInt(
       e.target.getAttribute("dominokey")
@@ -160,8 +160,8 @@ function App() {
   };
 
   const handleOnMouseOverPlayerCard = (e) => {
-    console.log("handleOnMouseOverPlayerCard")
-    console.log(e.target)
+    console.log("handleOnMouseOverPlayerCard");
+    console.log(e.target);
 
     if (!e.target) return;
     const possibleHoveredDominoKey = parseInt(
@@ -241,7 +241,7 @@ function App() {
 
   const onStop = (e, i) => {
     const elems = getHitElements(e);
-    console.log("elems", elems)
+    console.log("elems", elems);
     let row;
     let col;
     for (let i = 0; i < elems.length; i++) {
@@ -258,16 +258,14 @@ function App() {
     if (!(typeof col === "number" && typeof row === "number")) {
       // setCount(count + 1)
     }
-    setCount(count + 1)
+    setCount(count + 1);
     // setHand(hand.slice(0, i).concat(hand.slice(i + 1)))
-    
+
     console.log(row, col);
   };
 
-
   const handlePlayerMove = (num) => {
     if (isComputersTurn) return;
-    console.log("handlePlayerMove", num)
     let resolvedNum = typeof num === "number" ? num : hoveredPlayerDomino;
     if (typeof resolvedNum !== "number") return;
     const madePlay = tryPlayDomino(resolvedNum, selectedDominoKey, false);
@@ -426,12 +424,12 @@ function App() {
     }
   };
 
-  // useEffect(() => {
-  //   document.addEventListener("keydown", arrowPressHandler);
-  //   return () => {
-  //     document.removeEventListener("keydown", arrowPressHandler);
-  //   };
-  // }, [hoveredDomino, playedCards, hoveredPlayerDomino, selectedDominoKey]);
+  useEffect(() => {
+    document.addEventListener("keydown", arrowPressHandler);
+    return () => {
+      document.removeEventListener("keydown", arrowPressHandler);
+    };
+  }, [hoveredDomino, playedCards, hoveredPlayerDomino, selectedDominoKey]);
 
   return (
     <div className="App">
@@ -623,8 +621,8 @@ function App() {
               className={classNames("domino-vertical", "player-hand")}
               // onStop={(e) => onStop(e, idx)}
               onMouseOver={handleOnMouseOverPlayerCard}
-              onMouseDown={()=>{
-                handlePlayerMove(num)
+              onMouseDown={() => {
+                handlePlayerMove(num);
               }}
               isOnBoard={false}
               isComputersTurn={isComputersTurn}
